@@ -1,0 +1,1302 @@
+/*
+ * Rails marketing parity (rails-web/theme.css + lib/marketingTheme.ts).
+ * Brand green matches rails-web marketing Tailwind emerald usage (e.g. text-emerald-600 / #059669,
+ * dark:text-emerald-400, border-emerald-500 / #10b981 — see MarketingHome, UseCasesPage, ArchitectureDiagram).
+ * Starlight/Stainless use document.documentElement.dataset.theme === 'light' | 'dark'.
+ */
+
+:root {
+  /* Square UI (cards, buttons, panels) — matches marketing sharp geometry */
+  --sl-button-border-radius: 0;
+  --stl-ui-layout-border-radius-xs: 0;
+  --stl-ui-layout-border-radius-sml: 0;
+  --stl-ui-layout-border-radius: 0;
+  --stl-ui-layout-border-radius-med: 0;
+  /* keep for truly circular controls if any */
+  --stl-ui-layout-border-radius-max: 100vmax;
+
+  --stl-color-background: light-dark(#ffffff, #000000);
+  --stl-color-foreground: light-dark(#27272a, #fafafa);
+  /*
+   * Stainless accent chain derives borders/muted/link from --stl-color-accent.
+   * Light: emerald-600 (#059669). Dark: same hue, slightly deeper (#047857 emerald-700) so
+   * white label on solid accent stays WCAG-AA friendly; links still read as marketing green.
+   */
+  --stl-color-accent: light-dark(#059669, #047857);
+
+  --sl-font: var(--stl-typography-font), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: var(--stl-typography-font-mono), 'Noto Sans Mono', ui-monospace, monospace;
+}
+
+/* Starlight props (links.css, mintlify card, reset accent-color) — align with marketing emerald */
+:root,
+::backdrop {
+  --sl-color-accent-low: hsl(163 50% 16%);
+  --sl-color-accent: hsl(160 84% 38%);
+  --sl-color-accent-high: hsl(151 62% 74%);
+}
+
+:root[data-theme='light'],
+[data-theme='light'] ::backdrop {
+  --sl-color-accent-high: hsl(163 88% 22%);
+  --sl-color-accent: hsl(161 94% 31%);
+  --sl-color-accent-low: hsl(149 76% 92%);
+}
+
+/* Solid accent control: high-contrast focus ring on green (outline uses page-neutral + inner ring). */
+.stl-ui-button--accent:focus-visible {
+  outline: 2px solid light-dark(#fafafa, #0a0a0a);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px light-dark(rgb(5 150 105 / 0.45), rgb(4 120 87 / 0.55));
+}
+
+body {
+  font-family: var(--stl-typography-font), 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.structural-border {
+  border-color: #e5e5e5;
+}
+
+:root[data-theme='dark'] .structural-border,
+html[data-theme='dark'] .structural-border {
+  border-color: #1f1f1f;
+}
+
+.label-micro {
+  font-family: var(--stl-typography-font-mono), 'Noto Sans Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #71717a;
+}
+
+:root[data-theme='dark'] .label-micro,
+html[data-theme='dark'] .label-micro {
+  color: #a1a1aa;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading,
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+.sl-markdown-content h5,
+.sl-markdown-content h6 {
+  font-family: var(--stl-typography-font-heading), 'Space Grotesk', var(--stl-typography-font), ui-sans-serif,
+    system-ui, sans-serif;
+}
+
+.font-mono {
+  font-family: var(--stl-typography-font-mono), 'Noto Sans Mono', 'Menlo', 'Monaco', 'Courier New', monospace !important;
+  letter-spacing: -0.025em;
+}
+
+.grid-background,
+.grid-background-docs {
+  background-image: radial-gradient(#e4e4e7 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
+:root[data-theme='dark'] .grid-background,
+html[data-theme='dark'] .grid-background,
+:root[data-theme='dark'] .grid-background-docs,
+html[data-theme='dark'] .grid-background-docs {
+  background-image: radial-gradient(#27272a 0.5px, transparent 0.5px);
+}
+
+.material-symbols-sharp {
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  vertical-align: middle;
+}
+
+/*
+ * Lucide / inline SVG → Material Symbols Sharp (repo-owned styling).
+ * Does NOT touch: SDK language logos in `.stldocs-language-block-content-icon svg`,
+ * `rails-logo.svg` (site title), or Pagefind’s own UI assets.
+ */
+/* ── Snippet copy (react swaps Lucide icons on success / error) ── */
+[data-stldocs-snippet-copy] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-stldocs-snippet-copy] svg.lucide {
+  display: none !important;
+}
+
+[data-stldocs-snippet-copy]::before {
+  content: 'content_copy';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+[data-stldocs-snippet-copy]:has(svg.lucide-check)::before {
+  content: 'check';
+}
+
+[data-stldocs-snippet-copy]:has(svg.lucide-circle-alert)::before {
+  content: 'error';
+}
+
+/* ── Header search (Starlight inline SVG, not Lucide) ── */
+site-search > button[data-open-modal] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+site-search > button[data-open-modal] > svg {
+  display: none !important;
+}
+
+site-search > button[data-open-modal]::before {
+  content: 'search';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+/* ── Sidebar group expander (Lucide chevron) ── */
+details.stldocs-sidebar-expander > .stldocs-expander-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+details.stldocs-sidebar-expander > .stldocs-expander-summary svg.lucide {
+  display: none !important;
+}
+
+details.stldocs-sidebar-expander > .stldocs-expander-summary::after {
+  content: 'expand_more';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-color-foreground-reduced);
+  transition: transform 0.15s ease;
+  margin-inline-start: auto;
+}
+
+details.stldocs-sidebar-expander[open] > .stldocs-expander-summary::after {
+  transform: rotate(180deg);
+}
+
+/* ── API breadcrumbs (Join inserts bare Lucide chevrons) ── */
+.stldocs-breadcrumbs > svg.lucide {
+  display: none !important;
+}
+
+.stldocs-breadcrumbs > .stldocs-breadcrumbs-item:not(:last-child)::after {
+  content: 'chevron_right';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.05rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-color-foreground-reduced);
+  display: inline-block;
+  margin: 0 0.2em;
+  vertical-align: middle;
+}
+
+/* ── Property expand / collapse (Lucide arrows) ── */
+.stldocs-expand-toggle-content svg.lucide {
+  display: none !important;
+}
+
+.stldocs-expand-toggle > .stldocs-expand-toggle-content:first-of-type::after {
+  content: 'expand_more';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  margin-inline-start: 0.2em;
+  vertical-align: middle;
+  color: var(--stl-color-foreground-reduced);
+}
+
+.stldocs-expand-toggle > .stldocs-expand-toggle-content:last-of-type::after {
+  content: 'expand_less';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  margin-inline-start: 0.2em;
+  vertical-align: middle;
+  color: var(--stl-color-foreground-reduced);
+}
+
+/* ── Accordion expander +/- (body, not sidebar) ── */
+.stldocs-expander:not(.stldocs-sidebar-expander) .stldocs-expander-summary-icon svg.lucide {
+  display: none !important;
+}
+
+.stldocs-expander:not(.stldocs-sidebar-expander) .stldocs-expander-summary-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  min-height: 1rem;
+}
+
+details.stldocs-expander:not(.stldocs-sidebar-expander):not([open]) .stldocs-expander-summary-icon::before,
+div.stldocs-expander:not(.stldocs-sidebar-expander)[data-open='false'] .stldocs-expander-summary-icon::before {
+  content: 'add';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-color-foreground-reduced);
+}
+
+details.stldocs-expander:not(.stldocs-sidebar-expander)[open] .stldocs-expander-summary-icon::before,
+div.stldocs-expander:not(.stldocs-sidebar-expander)[data-open='true'] .stldocs-expander-summary-icon::before {
+  content: 'remove';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-color-foreground-reduced);
+}
+
+/* ── Callouts (Lucide per @stainless-api/ui-primitives Callout) ── */
+.stl-ui-callout > svg.stl-ui-callout__icon {
+  display: none !important;
+}
+
+.stl-ui-callout:is(
+    .stl-ui-callout--info,
+    .stl-ui-callout--note,
+    .stl-ui-callout--tip,
+    .stl-ui-callout--success,
+    .stl-ui-callout--warning,
+    .stl-ui-callout--danger
+  )::before {
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.35rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-ui-callout-accent-color, var(--stl-color-foreground-reduced));
+  flex-shrink: 0;
+  margin: calc(0.5lh - 0.5em) 0 0;
+}
+
+.stl-ui-callout--info::before {
+  content: 'info';
+}
+
+.stl-ui-callout--note::before {
+  content: 'description';
+}
+
+.stl-ui-callout--tip::before {
+  content: 'lightbulb';
+}
+
+.stl-ui-callout--success::before {
+  content: 'check_circle';
+}
+
+.stl-ui-callout--warning::before {
+  content: 'warning';
+}
+
+.stl-ui-callout--danger::before {
+  content: 'report';
+}
+
+/* ── Starlight heading anchor (inline link SVG) ── */
+.sl-anchor-link .sl-anchor-icon svg {
+  display: none !important;
+}
+
+.sl-anchor-link .sl-anchor-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sl-anchor-link .sl-anchor-icon::before {
+  content: 'link';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+/* ── Starlight pagination ── */
+.pagination-links__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.pagination-links__button svg.lucide {
+  display: none !important;
+}
+
+.pagination-links__button::before {
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+.pagination-links__link:first-child .pagination-links__button::before {
+  content: 'chevron_left';
+}
+
+.pagination-links__link:last-child .pagination-links__button::before {
+  content: 'chevron_right';
+}
+
+.pagination-links__link:only-child .pagination-links__button::before {
+  content: 'chevron_right';
+}
+
+/* Resource header parent path (inline Lucide chevrons between segments) */
+.stldocs-resource-title .stldocs-resource-title-segment svg.lucide {
+  display: none !important;
+}
+
+.stldocs-resource-title .stldocs-resource-title-segment:not(:last-child)::after {
+  content: 'chevron_right';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: var(--stl-color-foreground-reduced);
+  display: inline-block;
+  margin: 0 0.15em;
+  vertical-align: middle;
+}
+
+/* ── Method / schema “link” icon buttons (Lucide link icon) ── */
+.stl-ui-button__icon svg.lucide-link {
+  display: none !important;
+}
+
+.stl-ui-button__icon:has(svg.lucide-link)::before {
+  content: 'link';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+.stl-ui-button__icon:has(svg.lucide-link) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glow-effect {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.03);
+}
+
+:root[data-theme='dark'] .glow-effect,
+html[data-theme='dark'] .glow-effect {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.stl-ui-mintlify-compat-card {
+  border-radius: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+
+:root[data-theme='dark'] ::-webkit-scrollbar-track,
+html[data-theme='dark'] ::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 10px;
+}
+
+:root[data-theme='dark'] ::-webkit-scrollbar-thumb,
+html[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+
+:root[data-theme='dark'] ::-webkit-scrollbar-thumb:hover,
+html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ─── Docs intro landing (Resend-like rhythm: title block, divider, narrow prose, cards) ─── */
+.stl-content-panel:has(+ .stl-content-panel .rails-intro) {
+  padding-bottom: 1.25rem;
+  margin-bottom: 0;
+  border-bottom: 1px solid light-dark(#e4e4e7, #27272a);
+}
+
+.sl-markdown-content:has(.rails-intro) {
+  max-width: 42rem;
+}
+
+.rails-intro {
+  --rails-intro-section-gap: clamp(1.75rem, 3vw, 2.75rem);
+}
+
+.rails-intro > * + * {
+  margin-top: var(--rails-intro-section-gap);
+}
+
+.rails-intro h2 {
+  margin-top: 0;
+  margin-bottom: 0.65rem;
+  font-size: clamp(1.05rem, 0.25rem + 1.5vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.rails-intro h2 + * {
+  margin-top: 0.75rem;
+}
+
+.rails-intro__lead {
+  margin: 0;
+  font-size: clamp(1.1rem, 0.45rem + 1.1vw, 1.25rem);
+  line-height: 1.55;
+  color: light-dark(#3f3f46, #a1a1aa);
+}
+
+.rails-intro__breadcrumbs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.rails-intro__breadcrumbs span {
+  color: light-dark(#a1a1aa, #52525b);
+}
+
+.rails-intro__divider {
+  width: 100%;
+  height: 1px;
+  margin: 1.5rem 0 0;
+  background: light-dark(#e4e4e7, #27272a);
+}
+
+.rails-intro__body {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: light-dark(#3f3f46, #a1a1aa);
+}
+
+.rails-intro__learn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.rails-intro__learn-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  background: light-dark(#fff, #000);
+  padding: 1.25rem;
+}
+
+.rails-intro__learn-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.rails-intro__learn-head h3 {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.rails-intro__icon-box {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+.rails-intro__icon-box .material-symbols-sharp {
+  font-size: 1rem;
+}
+
+.rails-intro__icon-box--orange {
+  border-color: light-dark(#fed7aa, rgb(154 52 18 / 0.6));
+  color: light-dark(#c2410c, #fb923c);
+  background: light-dark(#fff7ed, rgb(124 45 18 / 0.25));
+}
+
+.rails-intro__icon-box--purple {
+  border-color: light-dark(#e9d5ff, rgb(107 33 168 / 0.55));
+  color: light-dark(#9333ea, #c084fc);
+  background: light-dark(#faf5ff, rgb(88 28 135 / 0.28));
+}
+
+.rails-intro__learn-card p {
+  margin: 0.85rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: light-dark(#52525b, #a1a1aa);
+}
+
+.rails-intro__learn-card > p {
+  flex: 1 1 auto;
+}
+
+.rails-intro__quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.rails-intro__quick-link {
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  background: light-dark(#fff, #000);
+  padding: 0.85rem 0.95rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.65rem;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.rails-intro__quick-link:hover {
+  background: light-dark(#fafafa, #09090b);
+  border-color: light-dark(#d4d4d8, #3f3f46);
+}
+
+.rails-intro__quick-link .material-symbols-sharp {
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  color: light-dark(#71717a, #a1a1aa);
+}
+
+.rails-intro__quick-link strong {
+  display: block;
+  font-size: 0.92rem;
+  color: light-dark(#18181b, #fafafa);
+}
+
+.rails-intro__quick-link p {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: light-dark(#52525b, #a1a1aa);
+}
+
+.rails-intro .starlight-aside {
+  margin-top: 1rem;
+}
+
+@media (max-width: 50rem) {
+  .rails-intro__learn-grid,
+  .rails-intro__quick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rails-intro__learn-head h3 {
+    font-size: 1.35rem;
+  }
+}
+
+/* Header alignment with rails-web-v2 docs layout */
+.page > header {
+  background: light-dark(#ffffff, #0a0a0a) !important;
+  border-bottom: 1px solid light-dark(#e4e4e7, #27272a) !important;
+}
+
+header > .header {
+  min-height: 56px !important;
+  padding-inline: 1rem !important;
+  gap: 0.75rem !important;
+  align-items: center !important;
+}
+
+/* Site title: rails-web parity — w-5 h-5 mark + gap-3; Dashboard “Rails” = font-semibold text-lg tracking-tight (Inter) */
+a.site-title {
+  gap: 0.75rem !important;
+  align-items: center !important;
+}
+
+a.site-title img {
+  width: 20px !important;
+  height: 20px !important;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Black square + light strokes → invert in dark so square reads white and strokes black (matches marketing header). */
+:root[data-theme='dark'] a.site-title img,
+html[data-theme='dark'] a.site-title img {
+  filter: invert(1);
+}
+
+a.site-title span {
+  font-family: var(--stl-typography-font), 'Inter', ui-sans-serif, system-ui, sans-serif !important;
+  font-size: 1.125rem !important; /* text-lg */
+  font-weight: 600 !important; /* font-semibold */
+  letter-spacing: -0.025em !important; /* tracking-tight */
+  color: light-dark(#000000, #ffffff) !important;
+}
+
+header .header a,
+header .header button {
+  border-radius: 0 !important;
+}
+
+header .right-group {
+  gap: 0.5rem;
+}
+
+.header site-search > button,
+.header site-search .stl-search-trigger {
+  border-radius: 0 !important;
+  border: 1px solid light-dark(#e4e4e7, #27272a) !important;
+  background: light-dark(#fafafa, #09090b) !important;
+  min-height: 34px !important;
+}
+
+.header .right-group a,
+.header .right-group button {
+  min-height: 34px;
+  padding-inline: 0.75rem !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.stl-secondary-nav-tabs {
+  border-top: 0 !important;
+  border-bottom: 1px solid light-dark(#e4e4e7, #27272a) !important;
+  background: light-dark(#ffffff, #0a0a0a) !important;
+}
+
+.stl-secondary-nav-tabs a {
+  border-radius: 0 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500;
+}
+
+.stl-secondary-nav-tabs a[aria-current='page'] {
+  border-bottom: 2px solid light-dark(#18181b, #fafafa) !important;
+}
+
+/* Guides sidebar icons (match rails-web-v2 docs nav style) */
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href]::before {
+  font-family: 'Material Symbols Sharp';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 16px !important;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px !important;
+  min-width: 16px !important;
+  max-width: 16px !important;
+  height: 16px !important;
+  min-height: 16px !important;
+  max-height: 16px !important;
+  flex-shrink: 0;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20 !important;
+  color: light-dark(#71717a, #a1a1aa);
+  content: '';
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href$='/index/']::before {
+  content: 'menu_book';
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/']::before {
+  content: 'play_arrow';
+}
+
+/* SDK entries under Quick start: same assets as @stainless-api/docs language blocks; muted until current */
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/typescript/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before {
+  content: '' !important;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: light-dark(0.42, 0.38);
+  filter: saturate(0.75) brightness(0.88);
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/typescript/']::before {
+  background-image: url('/sidebar-sdk/typescript.svg');
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/']::before {
+  background-image: url('/sidebar-sdk/go.svg');
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/']::before {
+  background-image: url('/sidebar-sdk/java.svg');
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/']::before {
+  background-image: url('/sidebar-sdk/kotlin.svg');
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before {
+  background-image: url('/sidebar-sdk/csharp.svg');
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/architecture/']::before {
+  content: 'account_tree';
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/authentication/']::before {
+  content: 'shield_person';
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/sdk-overview/']::before {
+  content: 'terminal';
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[aria-current='page']::before {
+  color: light-dark(#18181b, #fafafa);
+}
+
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/typescript/'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/'][aria-current='page']::before {
+  opacity: 1;
+  filter: none;
+}
+
+/* Sidebar hover should not underline (rails-web-v2 style) */
+.stldocs-sidebar .stldocs-sidebar-entry-link a:hover {
+  text-decoration: none !important;
+}
+
+/* ─── Collapsible desktop sidebar (icon-only); class + storage wired in astro.config.ts head ─── */
+:root {
+  --rails-sidebar-collapsed-width: 4.25rem;
+}
+
+@media (min-width: 50rem) {
+  html.rails-sidebar-collapsed:not(:has(.page > .sidebar.hidden)) {
+    --stl-sidebar-width: var(--rails-sidebar-collapsed-width);
+  }
+
+  .rails-sidebar-toggle-wrap {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    flex-shrink: 0;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.15rem;
+    border-bottom: 1px solid light-dark(#e4e4e7, #27272a);
+  }
+
+  .rails-sidebar-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 1px solid light-dark(#e4e4e7, #27272a);
+    border-radius: 0;
+    background: light-dark(#fafafa, #09090b);
+    color: light-dark(#18181b, #fafafa);
+    cursor: pointer;
+  }
+
+  .rails-sidebar-toggle:hover {
+    background: light-dark(#f4f4f5, #18181b);
+  }
+
+  .rails-sidebar-toggle:focus-visible {
+    outline: 2px solid light-dark(#18181b, #fafafa);
+    outline-offset: 2px;
+  }
+
+  .rails-sidebar-toggle .material-symbols-sharp {
+    font-size: 1.25rem;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+}
+
+@media not (min-width: 50rem) {
+  .rails-sidebar-toggle-wrap {
+    display: none !important;
+  }
+}
+
+html.rails-sidebar-collapsed .stldocs-root.stldocs-sidebar {
+  --stldocs-sidebar-item-padding-inline: 0.25rem;
+}
+
+html.rails-sidebar-collapsed .page > .sidebar :is(.stl-sdk-select, .stldocs-sidebar) {
+  margin-inline-start: 0;
+}
+
+html.rails-sidebar-collapsed .stldocs-sidebar .stldocs-sidebar-entry-link > a {
+  font-size: 0;
+  line-height: 0;
+  justify-content: center;
+  column-gap: 0;
+}
+
+html.rails-sidebar-collapsed .stldocs-sidebar .stldocs-sidebar-entry-link > a::before {
+  margin-inline-end: 0 !important;
+}
+
+/* API / other pages: show a neutral glyph when no guide-specific ::before content */
+html.rails-sidebar-collapsed
+  .stldocs-sidebar
+  .stldocs-sidebar-entry-link
+  > a[href*='/api']:not([href*='guides'])::before {
+  content: 'hub' !important;
+}
+
+html.rails-sidebar-collapsed .stldocs-expander-summary {
+  justify-content: center;
+  gap: 0;
+  padding-inline: 0.125rem;
+}
+
+html.rails-sidebar-collapsed .stldocs-expander-summary > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+html.rails-sidebar-collapsed .stldocs-expander-summary .stldocs-expander-summary-icon {
+  margin-left: 0;
+}
+
+html.rails-sidebar-collapsed .stl-sdk-select .stl-ui-dropdown__button {
+  justify-content: center;
+  padding-inline: 0.25rem;
+  min-width: 2.25rem;
+}
+
+html.rails-sidebar-collapsed .stl-sdk-select .stl-ui-dropdown__trigger-selected,
+html.rails-sidebar-collapsed .stl-sdk-select [data-part='trigger-selected'] {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+html.rails-sidebar-collapsed .stl-sdk-select [data-part='trigger-icon'] {
+  margin-inline: 0;
+}
+
+/* Architecture guide diagram (ported visual model from rails-web-v2 infrastructure page) */
+.rails-arch-diagram {
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  background: light-dark(#fafafa, #050505);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.rails-arch-node {
+  width: min(100%, 22rem);
+  border: 1px solid light-dark(#d4d4d8, #3f3f46);
+  background: light-dark(#fff, #0a0a0a);
+  padding: 0.7rem 0.9rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.rails-arch-node strong {
+  color: light-dark(#18181b, #fafafa);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.rails-arch-node span {
+  color: light-dark(#71717a, #a1a1aa);
+  font-size: 0.7rem;
+}
+
+.rails-arch-node--dashed {
+  border-style: dashed;
+}
+
+.rails-arch-node--gateway {
+  background: light-dark(#f4f4f5, #111111);
+  color: light-dark(#18181b, #fafafa);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.rails-arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.rails-arch-line {
+  width: 1px;
+  height: 12px;
+  background: light-dark(#d4d4d8, #3f3f46);
+}
+
+.rails-arch-dot {
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  border: 1px solid light-dark(#a1a1aa, #52525b);
+  background: light-dark(#fff, #000);
+}
+
+.rails-arch-connector > span {
+  position: absolute;
+  right: calc(50% - 9.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.62rem;
+  color: light-dark(#71717a, #71717a);
+}
+
+.rails-arch-api {
+  width: min(100%, 22rem);
+  border: 1px solid light-dark(#d4d4d8, #3f3f46);
+  background: light-dark(#fff, #000);
+  padding: 0.85rem;
+  position: relative;
+}
+
+.rails-arch-api-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-100%);
+  background: light-dark(#f4f4f5, #27272a);
+  color: light-dark(#18181b, #fafafa);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.2rem 0.45rem;
+}
+
+.rails-arch-api-grid {
+  margin-top: 0.55rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.rails-arch-node--service,
+.rails-arch-node--ledger {
+  width: auto;
+  text-align: center;
+  padding: 0.55rem;
+}
+
+.rails-arch-node--service {
+  background: light-dark(#fafafa, #09090b);
+}
+
+.rails-arch-node--ledger {
+  grid-column: 1 / -1;
+  background: light-dark(#f4f4f5, #111111);
+}
+
+.rails-arch-mesh {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.62rem;
+  color: light-dark(#71717a, #a1a1aa);
+}
+
+/* Header theme control: single button (replaces dropdown), aligned with rails-web-v2 ThemeToggle */
+.stl-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--stl-color-foreground-reduced, #71717a);
+  cursor: pointer;
+  border-radius: var(--stl-ui-layout-border-radius-xs, 0);
+  transition: color 0.15s ease;
+}
+
+.stl-theme-toggle:hover {
+  color: var(--stl-color-foreground, #27272a);
+}
+
+:root[data-theme='dark'] .stl-theme-toggle:hover,
+html[data-theme='dark'] .stl-theme-toggle:hover {
+  color: var(--stl-color-foreground, #fafafa);
+}
+
+.stl-theme-toggle__icon {
+  font-size: 1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* API Reference overview Libraries parity with rails-web-v2 Docs page */
+.stl-overview > h3:first-child {
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: clamp(1.35rem, 1.05rem + 0.9vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.stl-overview .language-blocks {
+  margin-top: 0.5rem !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem !important;
+}
+
+.stl-overview .language-blocks > * {
+  width: auto !important;
+  flex: initial !important;
+  min-width: 0;
+}
+
+.stl-overview .stldocs-language-block {
+  border: 1px solid light-dark(#e4e4e7, #27272a);
+  border-radius: 0;
+  padding: 1.25rem;
+  gap: 0.9rem;
+  background: light-dark(#ffffff, #000000);
+}
+
+.stl-overview .stldocs-language-block-content {
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stl-overview .stldocs-language-block-content-icon {
+  width: 3rem;
+  height: 3rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  border-radius: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-color: light-dark(#e4e4e7, #27272a);
+  background: light-dark(#ffffff, #09090b);
+}
+
+/* SDK marks are 24×24 in markup; scale up so logos read clearly in the Libraries grid. */
+.stl-overview .stldocs-language-block-content-icon svg {
+  width: 2.375rem !important;
+  height: 2.375rem !important;
+  max-width: none !important;
+  flex-shrink: 0;
+  display: block;
+}
+
+.stl-overview .stldocs-language-block-content-info-language {
+  color: light-dark(#09090b, #fafafa);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.stl-overview .stldocs-language-block-content-info-version {
+  color: light-dark(#71717a, #a1a1aa);
+  font-size: 0.72rem;
+  font-weight: 400;
+}
+
+.stl-overview .stldocs-language-block-install {
+  border-radius: 0;
+  border-color: light-dark(#e4e4e7, #27272a);
+  background: light-dark(#f4f4f5, #09090b);
+  color: light-dark(#3f3f46, #d4d4d8);
+  font-size: 0.73rem;
+  padding: 0.45rem 0.55rem;
+}
+
+.stl-overview .stldocs-language-block-install pre {
+  line-height: 1.2;
+}
+
+.stl-overview .stldocs-language-block-install [data-stldocs-snippet-copy] {
+  border-radius: 0;
+  min-width: 1.7rem;
+  height: 1.7rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stl-overview .stldocs-language-block-links {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+}
+
+.stl-overview .stldocs-language-block-links > a {
+  border-radius: 0;
+  min-height: 2.05rem;
+  padding: 0.35rem 0.7rem;
+  border-color: light-dark(#e4e4e7, #27272a);
+  color: light-dark(#3f3f46, #d4d4d8);
+  background: light-dark(#ffffff, #000000);
+}
+
+.stl-overview .stldocs-language-block-links > a:hover {
+  background: light-dark(#fafafa, #09090b);
+}
+
+.stl-overview .stldocs-language-block-links > a:last-child {
+  justify-content: center;
+  font-size: 0.84rem;
+  font-weight: 500;
+}
+
+/* Repo link: keep docs-ui GitHub mark SVG (path from icons.js). API link: Lucide book → Material menu_book. */
+.stl-overview .stldocs-language-block-links a[href*='github.com'] .stl-ui-button__icon,
+.stl-overview .stldocs-language-block-links a[href^='/api/'] .stl-ui-button__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  min-height: 1.125rem;
+}
+
+.stl-overview .stldocs-language-block-links a[href^='/api/'] .stl-ui-button__icon svg {
+  display: none !important;
+}
+
+.stl-overview .stldocs-language-block-links a[href^='/api/'] .stl-ui-button__icon::before {
+  content: 'menu_book';
+  font-family: 'Material Symbols Sharp';
+  font-size: 1.125rem;
+  line-height: 1;
+  font-weight: normal;
+  font-style: normal;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  -webkit-font-smoothing: antialiased;
+  color: inherit;
+}
+
+.stl-overview > h3 + .language-blocks + h3 {
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.35rem, 1.05rem + 0.9vw, 1.55rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 72rem) {
+  .stl-overview .language-blocks {
+    grid-template-columns: 1fr;
+  }
+}

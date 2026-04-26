@@ -1,0 +1,113 @@
+---
+/**
+ * Replaces the default Stainless `ThemeSelect` dropdown: cycles light → dark → system (auto),
+ * matching rails-web-v2 `ThemeToggle`. Uses `starlight-theme` in localStorage (same as Starlight / stainless ThemeSelect).
+ */
+---
+
+<button
+  type="button"
+  class="stl-theme-toggle stl-ui-not-prose not-content"
+  data-theme-toggle
+  aria-label="Toggle color theme"
+>
+  <span class="material-symbols-sharp stl-theme-toggle__icon" aria-hidden="true" data-theme-icon>desktop_windows</span>
+</button>
+
+<script>
+  const storageKey = 'starlight-theme';
+
+  type Theme = 'auto' | 'dark' | 'light';
+
+  const parseTheme = (val: unknown): Theme =>
+    val === 'auto' || val === 'dark' || val === 'light' ? val : 'auto';
+
+  const loadTheme = (): Theme => parseTheme(localStorage.getItem(storageKey));
+
+  const storeTheme = (theme: Theme) => {
+    localStorage.setItem(storageKey, parseTheme(theme));
+  };
+
+  const getPreferredColorScheme = (): 'light' | 'dark' =>
+    window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+
+  const applyTheme = (doc: Document, theme: Theme) => {
+    const effective = theme === 'auto' ? getPreferredColorScheme() : theme;
+    doc.documentElement.dataset.theme = effective;
+    storeTheme(theme);
+  };
+
+  const iconFor = (theme: Theme): string => {
+    if (theme === 'light') return 'light_mode';
+    if (theme === 'dark') return 'dark_mode';
+    return 'desktop_windows';
+  };
+
+  const labelFor = (theme: Theme): string => {
+    if (theme === 'light') return 'Theme: light. Activate to use dark mode.';
+    if (theme === 'dark') return 'Theme: dark. Activate to use system theme.';
+    return 'Theme: system. Activate to use light mode.';
+  };
+
+  const cycle = (t: Theme): Theme => {
+    if (t === 'light') return 'dark';
+    if (t === 'dark') return 'auto';
+    return 'light';
+  };
+
+  function syncToggleUi(root: HTMLElement, theme: Theme) {
+    const icon = root.querySelector<HTMLElement>('[data-theme-icon]');
+    if (icon) icon.textContent = iconFor(theme);
+    root.setAttribute('aria-label', labelFor(theme));
+  }
+
+  function refreshAllToggleUi(theme: Theme) {
+    document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((btn) => syncToggleUi(btn, theme));
+  }
+
+  let systemPreferenceListenerBound = false;
+  function ensureSystemPreferenceListener() {
+    if (systemPreferenceListenerBound) return;
+    systemPreferenceListenerBound = true;
+    matchMedia('(prefers-color-scheme: light)').addEventListener('change', () => {
+      if (loadTheme() === 'auto') applyTheme(document, 'auto');
+    });
+  }
+
+  function initTheme(doc: Document) {
+    ensureSystemPreferenceListener();
+    applyTheme(doc, loadTheme());
+    if (doc === document) refreshAllToggleUi(loadTheme());
+  }
+
+  function onDocumentClick(e: MouseEvent) {
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    const el = t.closest<HTMLElement>('[data-theme-toggle]');
+    if (!el) return;
+    const next = cycle(loadTheme());
+    applyTheme(document, next);
+    refreshAllToggleUi(next);
+  }
+
+  let clickDelegationBound = false;
+  function ensureClickDelegation() {
+    if (clickDelegationBound) return;
+    clickDelegationBound = true;
+    document.addEventListener('click', onDocumentClick);
+  }
+
+  document.addEventListener('astro:before-swap', (event) => {
+    applyTheme(event.newDocument, loadTheme());
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initTheme(document);
+    ensureClickDelegation();
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    initTheme(document);
+    ensureClickDelegation();
+  });
+</script>
