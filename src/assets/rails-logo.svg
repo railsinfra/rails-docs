@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+  <!-- Matches rails-web: w-5 h-5 square + RailsTrackMark (12×12 in 24 viewBox, scaled 0.5 → 12px mark in 20px box). Light: black square, white strokes; dark via theme.css invert on img. -->
+  <rect width="20" height="20" fill="#000000"/>
+  <g fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="square" transform="translate(4,4) scale(0.5)">
+    <line x1="6" y1="5" x2="6" y2="19"/>
+    <line x1="18" y1="5" x2="18" y2="19"/>
+    <line x1="6" y1="8" x2="18" y2="8"/>
+    <line x1="6" y1="12" x2="18" y2="12"/>
+    <line x1="6" y1="16" x2="18" y2="16"/>
+  </g>
+</svg>

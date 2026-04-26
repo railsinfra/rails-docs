@@ -1,0 +1,115 @@
+---
+title: Introduction
+description: Banking APIs for identity, accounts, and ledger—typed SDKs and guides in one docs site.
+sidebar:
+  order: 0
+---
+
+import { Callout } from '@stainless-api/docs/components';
+
+<div class="rails-intro">
+
+<div class="rails-intro__breadcrumbs label-micro">Getting started <span>›</span> Introduction</div>
+
+<p class="rails-intro__lead">
+  What Rails is, how to start integrating, and where to find HTTP and SDK reference.
+</p>
+
+<div class="rails-intro__divider" />
+
+<p class="rails-intro__body">
+  <strong>Rails</strong> is banking infrastructure: identity, accounts, and a double-entry ledger behind a
+  single gateway. You use it when you need programmatic control over users, balances, and financial
+  finality—without folding those concerns into one database or one deployable.
+</p>
+
+## What you will learn
+
+<div class="rails-intro__learn-grid not-content">
+  <article class="rails-intro__learn-card">
+    <div class="rails-intro__learn-head">
+      <div class="rails-intro__icon-box rails-intro__icon-box--orange">
+        <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
+      </div>
+      <h3>How the platform is shaped</h3>
+    </div>
+    <p>
+      Bounded services (users, accounts, ledger) keep blast radius small and contracts explicit. Guides
+      explain how the pieces fit and how to run samples or the open-source core locally.
+    </p>
+  </article>
+  <article class="rails-intro__learn-card">
+    <div class="rails-intro__learn-head">
+      <div class="rails-intro__icon-box rails-intro__icon-box--purple">
+        <span class="material-symbols-sharp" aria-hidden="true">terminal</span>
+      </div>
+      <h3>How to integrate from code</h3>
+    </div>
+    <p>
+      Official SDKs are generated from the same OpenAPI spec as this site, so types and routes stay
+      aligned. Pair guides with the API Reference tab for every path, body, and snippet.
+    </p>
+  </article>
+</div>
+
+<Callout variant="info">
+  For every endpoint, request body, and SDK example, use the **API Reference** tab. It tracks the Stainless project and published clients.
+</Callout>
+
+## Quickstart
+
+Pick a path that matches how much of the stack you want on your machine.
+
+<div class="rails-intro__quick-grid">
+  <a class="rails-intro__quick-link" href="/guides/quick-start/">
+    <span class="material-symbols-sharp" aria-hidden="true">play_arrow</span>
+    <div>
+      <strong>Quick start</strong>
+      <p>First requests, env vars, ports, and when to use SDK samples versus rails-core.</p>
+    </div>
+  </a>
+  <a class="rails-intro__quick-link" href="/guides/authentication/">
+    <span class="material-symbols-sharp" aria-hidden="true">shield_person</span>
+    <div>
+      <strong>Authentication</strong>
+      <p>Server API keys, base URL, and TLS expectations in development.</p>
+    </div>
+  </a>
+  <a class="rails-intro__quick-link" href="/guides/architecture/">
+    <span class="material-symbols-sharp" aria-hidden="true">account_tree</span>
+    <div>
+      <strong>Architecture</strong>
+      <p>Gateway routing, service boundaries, and contracts between HTTP surfaces.</p>
+    </div>
+  </a>
+  <a class="rails-intro__quick-link" href="/guides/sdk-overview/">
+    <span class="material-symbols-sharp" aria-hidden="true">terminal</span>
+    <div>
+      <strong>SDK overview</strong>
+      <p>Languages, install notes, and how Stainless clients map to the spec.</p>
+    </div>
+  </a>
+</div>
+
+## Explore
+
+Go deeper into generated reference and runnable examples.
+
+<div class="rails-intro__quick-grid">
+  <a class="rails-intro__quick-link" href="/api">
+    <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
+    <div>
+      <strong>API Reference</strong>
+      <p>HTTP reference and multi-language snippets from the published OpenAPI spec.</p>
+    </div>
+  </a>
+  <a class="rails-intro__quick-link" href="/guides/quick-start/">
+    <span class="material-symbols-sharp" aria-hidden="true">deployed_code</span>
+    <div>
+      <strong>Runnable samples</strong>
+      <p>Reference servers in rails-sdk-samples in this monorepo with first-request paths.</p>
+    </div>
+  </a>
+</div>
+
+</div>
