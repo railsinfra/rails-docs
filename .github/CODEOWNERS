@@ -1,0 +1,3 @@
+# Branch protection uses "Require review from Code Owners" for main/develop.
+# All paths require approval from this owner before merge.
+* @sibabale
