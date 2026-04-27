@@ -1,6 +1,17 @@
+# syntax=docker/dockerfile:1.4
 # Build Astro + Starlight (Stainless) static site, then serve with `serve` on $PORT.
-# https://docs.railway.com/guides/dockerfiles#using-variables-at-build-time
-# Astro 6 requires Node >= 22.12 (see local `pnpm run build` / package engines if added).
+#
+# The Stainless API key must be passed as a BuildKit secret (not ARG/ENV) so it is not
+# persisted in image metadata or layers. See: https://docs.docker.com/build/building/secrets/
+#
+# Local / CI example:
+#   export STAINLESS_API_KEY=stl_sk_...
+#   docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY \
+#     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
+#
+# Railway: platform docs still describe build-time vars as ARG; the builder must supply this
+# secret (equivalent to the CLI flag above). If builds fail with "secret not found", confirm
+# Railway passes BuildKit secrets for service variables or build the image in CI and deploy a prebuilt image.
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
@@ -12,24 +23,20 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
-# Railway: add variable STAINLESS_API_KEY on the service; it is passed into `docker build` when
-# this ARG name matches (see https://docs.railway.com/guides/dockerfiles#using-variables-at-build-time).
-# Do not use `ENV STAINLESS_API_KEY=` when empty — that blocks Stainless from falling back to `stl` locally.
-ARG STAINLESS_API_KEY
+# Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
-ENV PUBLIC_MARKETING_SITE_URL=$PUBLIC_MARKETING_SITE_URL
 COPY --from=deps /app/node_modules ./node_modules
+# Whole-tree copy is safe only because `.dockerignore` strips secrets, env files, creds, VCS, CI, and caches from the build context (see that file — do not loosen without review).
 COPY . .
-RUN if [ -z "${STAINLESS_API_KEY:-}" ]; then \
-      printf '%s\n' '' \
-        'STAINLESS_API_KEY is not set for this Docker build.' \
-        'Railway → rails-docs service → Variables → add STAINLESS_API_KEY (from https://app.stainless.com).' \
-        'Use the same value as in rails-docs/.env locally. Railway injects it at build time because the Dockerfile declares ARG STAINLESS_API_KEY.' \
-        '' >&2; \
-      exit 1; \
-    fi \
-    && export STAINLESS_API_KEY \
-    && pnpm run build
+RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
+    sh -c 'set -e; \
+      if [ -z "${STAINLESS_API_KEY:-}" ]; then \
+        echo "STAINLESS_API_KEY is not available for this build step." >&2; \
+        echo "Pass a BuildKit secret, e.g.: docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY ." >&2; \
+        exit 1; \
+      fi; \
+      export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
+      pnpm run build'
 
 FROM base AS runner
 ENV NODE_ENV=production

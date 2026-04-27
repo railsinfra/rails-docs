@@ -1,8 +1,56 @@
-node_modules
-dist
-.git
-.github
-**/.DS_Store
+# Trim the Docker build context before `COPY . .` so secrets and junk never reach the image.
+# Patterns follow https://docs.docker.com/build/building/context/#dockerignore-files
+# (negation with ! is supported; later rules can re-include paths.)
+
+# --- Environment & credentials (never send to daemon / image) ---
 .env
 .env.*
 !.env.example
+**/.env
+**/.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+*.pem.enc
+.netrc
+.npmrc
+.yarnrc.yml
+.pnpm-store
+
+# --- VCS & CI (not needed for `pnpm run build`) ---
+.git
+.github
+
+# --- Dependencies & build outputs (installed/copied in Dockerfile or generated) ---
+node_modules
+dist
+.astro
+.turbo
+coverage
+.nyc_output
+**/node_modules
+
+# --- Logs & caches ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.cache
+
+# --- IDE / OS noise ---
+**/.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# --- Repo-only docs / editor config (not imported by Astro) ---
+design-system
+.cursorrules
+.cursor
+
+# --- Local-only paths from .gitignore ---
+test-specs/
