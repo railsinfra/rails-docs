@@ -33,7 +33,11 @@
 
   const applyTheme = (doc: Document, theme: Theme) => {
     const effective = theme === 'auto' ? getPreferredColorScheme() : theme;
-    doc.documentElement.dataset.theme = effective;
+    const prev = doc.documentElement.getAttribute('data-theme');
+    const changed = prev !== effective;
+    if (changed) {
+      doc.documentElement.dataset.theme = effective;
+    }
     storeTheme(theme);
   };
 
@@ -62,7 +66,13 @@
   }
 
   function refreshAllToggleUi(theme: Theme) {
-    document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((btn) => syncToggleUi(btn, theme));
+    const wantIcon = iconFor(theme);
+    const wantLabel = labelFor(theme);
+    document.querySelectorAll<HTMLElement>('[data-theme-toggle]').forEach((btn) => {
+      const icon = btn.querySelector<HTMLElement>('[data-theme-icon]');
+      if (btn.getAttribute('aria-label') === wantLabel && icon?.textContent === wantIcon) return;
+      syncToggleUi(btn, theme);
+    });
   }
 
   let systemPreferenceListenerBound = false;
@@ -98,10 +108,14 @@
   }
 
   document.addEventListener('astro:before-swap', (event) => {
-    applyTheme(event.newDocument, loadTheme());
+    const nd = (event as unknown as { newDocument: Document }).newDocument;
+    applyTheme(nd, loadTheme());
   });
 
+  let domContentLoadedThemeBoot = false;
   document.addEventListener('DOMContentLoaded', () => {
+    if (domContentLoadedThemeBoot) return;
+    domContentLoadedThemeBoot = true;
     initTheme(document);
     ensureClickDelegation();
   });

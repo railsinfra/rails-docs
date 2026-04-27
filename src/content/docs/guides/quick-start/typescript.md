@@ -5,17 +5,15 @@ sidebar:
   order: 2
 ---
 
-Use this page with **`rails-sdks/rails-typescript/README.md`** in the monorepo for the full API surface, retries, timeouts, and advanced usage.
-
 ## Install
 
 From the SDK README:
 
 ```sh
-npm install railsinfra
+npm install @railsinfra/rails-typescript
 ```
 
-The package is published as **`railsinfra`** on npm (see the README badge and installation section).
+The client is published on npm as **`@railsinfra/rails-typescript`** (see the SDK README for the current version and import path).
 
 ## Configure and call the API
 
@@ -25,4 +23,4 @@ For every path, header, and body field, use the **[API Reference](/api)** tab in
 
 ## Try a runnable sample first
 
-If you want a small HTTP server with Swagger UI before you embed the library, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/typescript/`**.
+If you want a small HTTP server with Swagger UI before you embed the library, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/typescript"><code>rails-sdk-samples/typescript/</code></a>.
