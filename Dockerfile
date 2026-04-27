@@ -30,8 +30,12 @@ FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
 COPY --from=deps /app/node_modules ./node_modules
-# Whole-tree copy is safe only because `.dockerignore` strips secrets, env files, creds, VCS, CI, and caches from the build context (see that file — do not loosen without review).
-COPY . .
+# Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
+# still trims the client context for local builds — keep it aligned with these paths.
+COPY astro.config.ts middleware.stainless.tsx package.json pnpm-lock.yaml pnpm-workspace.yaml theme.css tsconfig.json stainless-virtual-modules.d.ts ./
+COPY public ./public
+COPY scripts ./scripts
+COPY src ./src
 RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
     sh -c 'set -e; \
       if [ -z "${STAINLESS_API_KEY:-}" ]; then \
