@@ -10,7 +10,8 @@
     "astro": "astro",
     "format": "prettier --write .",
     "typecheck": "astro check",
-    "test:nav-layout": "node scripts/verify-sidebar-toggle-static.mjs"
+    "test:nav-layout": "node scripts/verify-sidebar-toggle-static.mjs",
+    "verify:dockerfile": "docker build --call=check -f Dockerfile . && docker build --progress=plain --target deps -f Dockerfile -t rails-docs:deps-verify ."
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",

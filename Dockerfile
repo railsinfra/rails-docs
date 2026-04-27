@@ -17,20 +17,21 @@
 # secret (equivalent to the CLI flag above). If builds fail with "secret not found", confirm
 # Railway passes BuildKit secrets for service variables or build the image in CI and deploy a prebuilt image.
 #
-# Railway cache mounts: `id` must be exactly `s/<service-id>-<absolute target path>` (no variables).
-# Replace the UUID below with your service ID (Dashboard → service → copy ID from URL or settings)
-# when forking this image to another Railway service; other builders ignore the opaque id.
+# Railway BuildKit cache: `RUN --mount=type=cache,id=s/<service-id>-<abs path>,target=<path>` requires the
+# **literal** deploying service UUID (no ARG/env in `id`). A wrong UUID causes build failures (e.g.
+# "Cache mount ID is not prefixed with cache key"). This Dockerfile omits cache mounts so one image
+# builds on Railway, GitHub Actions, and local Docker; for per-service Railway cache, use a forked
+# Dockerfile with your service id or set RAILWAY_DOCKERFILE_PATH to such a file. See:
+# https://docs.railway.com/guides/dockerfiles#cache-mounts
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
-ENV PNPM_STORE_PATH="/pnpm/store"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/pnpm/store,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
@@ -55,8 +56,7 @@ RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
 FROM base AS runner
 ENV NODE_ENV=production
 # Install serve as root, then drop privileges: static file server does not need root at runtime.
-RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/root/.npm,target=/root/.npm \
-    npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
+RUN npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
   && groupadd --system railsdocs \
   && useradd --system --gid railsdocs --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin railsdocs
 WORKDIR /app

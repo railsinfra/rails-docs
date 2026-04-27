@@ -1,0 +1,36 @@
+# Validates Dockerfile syntax and that the deps stage builds (pnpm install) without secrets.
+name: Verify Dockerfile
+
+on:
+  pull_request:
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+  push:
+    branches:
+      - develop
+      - main
+      - staging
+    paths:
+      - Dockerfile
+      - .dockerignore
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+
+jobs:
+  dockerfile:
+    name: Docker static check and deps stage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Dockerfile static analysis (BuildKit)
+        run: docker build --call=check -f Dockerfile .
+
+      - name: Build deps stage (pnpm install in image)
+        run: docker build --progress=plain --target deps -f Dockerfile -t rails-docs:deps-verify .
