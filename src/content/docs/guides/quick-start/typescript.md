@@ -23,4 +23,4 @@ For every path, header, and body field, use the **[API Reference](/api)** tab in
 
 ## Try a runnable sample first
 
-If you want a small HTTP server with Swagger UI before you embed the library, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/typescript/`**.
+If you want a small HTTP server with Swagger UI before you embed the library, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/typescript"><code>rails-sdk-samples/typescript/</code></a>.

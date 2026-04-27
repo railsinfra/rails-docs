@@ -5,7 +5,7 @@ sidebar:
   order: 1
 ---
 
-You can integrate in two common ways: **small sample servers** in `rails-sdk-samples/` that call a Rails host you already have access to, or the **`rails-core`** repo to run the full gateway and backing services on your machine.
+You can integrate in two common ways: **small sample servers** in <a href="https://github.com/railsinfra/rails-sdk-samples"><code>rails-sdk-samples/</code></a> that call a Rails host you already have access to, or the **`rails-core`** repo to run the full gateway and backing services on your machine.
 
 ## Official SDKs
 
@@ -21,7 +21,7 @@ For install commands and how to construct a client in each language, open a page
 
 Use this when someone has already given you a **base URL** and **server API key** for a hosted environment. Skip this path if you still need to create databases or run the core services yourself.
 
-1. In this monorepo, open **`rails-sdk-samples/`** (see that folder’s `README.md` for the full matrix).
+1. In this monorepo or from a clone, open <a href="https://github.com/railsinfra/rails-sdk-samples"><code>rails-sdk-samples/</code></a> (see that repo’s `README.md` for the full matrix).
 2. Choose a language folder (`typescript/`, `go/`, `java/`, `kotlin/`, or `csharp/`), install dependencies, and copy **`.env.example`** to **`.env`**.
 3. Set:
    - **`RAILS_BASE_URL`** — Use the value from `.env.example` unless you were given a different host.

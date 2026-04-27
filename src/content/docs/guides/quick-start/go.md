@@ -31,4 +31,4 @@ Use the **[API Reference](/api)** tab for endpoint shapes and examples alongside
 
 ## Runnable sample
 
-For Swagger UI against your gateway, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/go/`** (default port **8083** per the overview).
+For Swagger UI against your gateway, follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/go"><code>rails-sdk-samples/go/</code></a> (default port **8083** per the overview).

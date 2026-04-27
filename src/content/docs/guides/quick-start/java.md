@@ -37,4 +37,4 @@ Pair that setup with the **[API Reference](/api)** tab for request builders and 
 
 ## Runnable sample
 
-Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/java/`** when you want a sample server before you integrate the library.
+Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/java"><code>rails-sdk-samples/java/</code></a> when you want a sample server before you integrate the library.

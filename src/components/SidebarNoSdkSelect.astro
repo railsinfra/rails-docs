@@ -2,8 +2,40 @@
 /**
  * Same as Stainless `SDKSelectSidebar` but without the API language dropdown
  * (`#sidebar-sdk-select`). Users switch SDKs via sidebar links (/api/typescript, etc.).
+ *
+ * Collapse toggle is rendered here (not injected on DOMContentLoaded) so the sidebar
+ * column does not shift after first paint.
  */
 import BaseSidebar from '../../node_modules/@stainless-api/docs/stl-docs/components/sidebars/BaseSidebar.astro';
 ---
 
+<div class="rails-sidebar-toggle-wrap">
+  <button
+    type="button"
+    class="rails-sidebar-toggle"
+    data-rails-sidebar-toggle
+    data-testid="rails-sidebar-toggle"
+    aria-controls="starlight__sidebar"
+    aria-expanded="true"
+    aria-label="Collapse docs sidebar"
+  >
+    <span
+      class="material-symbols-sharp rails-sidebar-toggle__glyph rails-sidebar-toggle__glyph--expand"
+      aria-hidden="true">left_panel_open</span>
+    <span
+      class="material-symbols-sharp rails-sidebar-toggle__glyph rails-sidebar-toggle__glyph--collapse"
+      aria-hidden="true">left_panel_close</span>
+  </button>
+</div>
+<script is:inline>
+  (function () {
+    try {
+      var collapsed = document.documentElement.classList.contains('rails-sidebar-collapsed');
+      var btn = document.querySelector('[data-rails-sidebar-toggle]');
+      if (!btn) return;
+      btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      btn.setAttribute('aria-label', collapsed ? 'Expand docs sidebar' : 'Collapse docs sidebar');
+    } catch (e) {}
+  })();
+</script>
 <BaseSidebar />

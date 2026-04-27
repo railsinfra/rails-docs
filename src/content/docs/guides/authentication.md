@@ -29,7 +29,7 @@ Some SDK examples also set an **environment** (for example staging vs production
 
 ## Samples and dev TLS
 
-The **`rails-sdk-samples`** apps are small servers that forward to the Rails API. If you hit **TLS or certificate errors** against a development host with a private CA, each sample README documents a **dev-only** insecure flag (for example the TypeScript sample may log when trust-all TLS is enabled). Use only in controlled dev setups.
+The <a href="https://github.com/railsinfra/rails-sdk-samples"><code>rails-sdk-samples</code></a> apps are small servers that forward to the Rails API. If you hit **TLS or certificate errors** against a development host with a private CA, each sample README documents a **dev-only** insecure flag (for example the TypeScript sample may log when trust-all TLS is enabled). Use only in controlled dev setups.
 
 ## Further reading
 

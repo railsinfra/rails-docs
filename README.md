@@ -4,8 +4,31 @@ This site uses the [Stainless Docs Platform](https://www.stainless.com/docs/docs
 
 ## Prerequisites
 
-- Node 20+ and `pnpm`
+- Node **22.12+** (Astro 6) and `pnpm`
 - A [Stainless API key](https://app.stainless.com) with access to the `rails` org/project (same key as the Stainless MCP / SDK tooling)
+
+## Railway (hosting)
+
+The **rails-infrastructure** project uses the included `Dockerfile` and `railway.toml`. There is **one service per environment** (Railway service names are unique across the project, so staging/production use distinct names):
+
+| Environment | Service name | Example public URL |
+|-------------|--------------|--------------------|
+| **dev** | `rails-docs` | https://rails-docs-dev.up.railway.app |
+| **staging** | `rails-docs-staging` | https://rails-docs-staging-staging.up.railway.app |
+| **production** | `rails-docs-production` | https://rails-docs-production-production.up.railway.app |
+
+*(Generated domains follow `{service}-{environment}.up.railway.app`; rename a service in Railway if you want a shorter hostname.)*
+
+1. For **each** of the services above → **Variables**, add:
+   - **`STAINLESS_API_KEY`** — **required** for the Docker image build (no `stl` login inside the container). Use the same `stl_sk_…` value as in local `.env`. The name must be exactly `STAINLESS_API_KEY` so it maps to `ARG STAINLESS_API_KEY` in the Dockerfile ([Railway build-time variables](https://docs.railway.com/guides/dockerfiles#using-variables-at-build-time)).
+   - **`PUBLIC_MARKETING_SITE_URL`** (optional) — origin of the marketing app (`rails-web`) for that environment for the header **Website** link.
+2. Deploy from this directory (link the env first, e.g. `railway environment staging`):
+   - Dev: `railway up --service rails-docs --detach`
+   - Staging: `railway up --service rails-docs-staging --detach`
+   - Production: `railway up --service rails-docs-production --detach`  
+   Or use `.github/workflows/deploy-*.yml` with `RAILWAY_TOKEN` (each workflow targets the matching service name).
+
+CI runs `pnpm run typecheck` only; the full `astro build` runs on Railway so the Stainless key does not need to live in GitHub unless you add a build job that runs `pnpm run build` with secrets.
 
 ## Setup
 

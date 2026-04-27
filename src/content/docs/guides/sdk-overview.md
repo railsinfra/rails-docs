@@ -28,4 +28,4 @@ If this site and a README disagree, trust the **package your team actually publi
 
 ## Try code without writing a full app
 
-Use **`rails-sdk-samples/`**: each folder is a small server with Swagger UI. Set **`RAILS_BASE_URL`** and **`RAILS_API_KEY`** in `.env`, then follow [Quick start](/guides/quick-start/) for ports and run commands.
+Use <a href="https://github.com/railsinfra/rails-sdk-samples"><code>rails-sdk-samples/</code></a>: each folder is a small server with Swagger UI. Set **`RAILS_BASE_URL`** and **`RAILS_API_KEY`** in `.env`, then follow [Quick start](/guides/quick-start/) for ports and run commands.

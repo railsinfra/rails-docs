@@ -1,0 +1,63 @@
+# On push to develop: typecheck, then deploy to Railway dev.
+# Add RAILWAY_TOKEN in the GitHub "development" environment.
+name: Deploy to Railway Dev
+
+on:
+  push:
+    branches:
+      - develop
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.15.5"
+
+jobs:
+  test:
+    name: Typecheck
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm run typecheck
+
+  deploy:
+    name: Deploy to Railway Dev
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+    environment: development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway Dev
+        run: |
+          if [ -z "$RAILWAY_TOKEN" ]; then
+            echo "::error::RAILWAY_TOKEN is not set. Add it in Settings → Environments → development, or in repository secrets, using a project token (Railway project → Settings → Tokens for the dev environment)."
+            exit 1
+          fi
+          railway up --service rails-docs --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}

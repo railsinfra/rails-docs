@@ -32,4 +32,4 @@ Use the **[API Reference](/api)** tab for HTTP details and examples that track t
 
 ## Runnable sample
 
-Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/csharp/`** when you want a sample server with OpenAPI first.
+Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/csharp"><code>rails-sdk-samples/csharp/</code></a> when you want a sample server with OpenAPI first.

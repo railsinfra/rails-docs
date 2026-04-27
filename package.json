@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test:nav-layout": "node scripts/verify-sidebar-toggle-static.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.4",
@@ -26,5 +27,12 @@
     "@types/react": "^19.2.14",
     "prettier": "^3.8.3",
     "typescript": "^6.0.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "protobufjs",
+      "sharp"
+    ]
   }
 }
