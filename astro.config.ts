@@ -6,10 +6,17 @@ const marketingSite =
     ? process.env.PUBLIC_MARKETING_SITE_URL.replace(/\/$/, '')
     : 'http://localhost:3000';
 
+/** In Docker/CI there is no `stl` CLI auth; pass the key explicitly when set. */
+const stainlessApiKey =
+  typeof process.env.STAINLESS_API_KEY === 'string' && process.env.STAINLESS_API_KEY.trim().length > 0
+    ? process.env.STAINLESS_API_KEY.trim()
+    : undefined;
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     stainlessDocs({
+      ...(stainlessApiKey ? { apiKey: stainlessApiKey } : {}),
       experimental: {
         starlightCompat: {
           /** Simple light → dark → system toggle (replaces default `ThemeSelect` dropdown). */
@@ -66,7 +73,7 @@ export default defineConfig({
         },
         {
           tag: 'script',
-          content: `(function(){var KEY='rails-docs-sidebar-collapsed';var MQ='(min-width: 50rem)';function mq(){try{return matchMedia(MQ).matches}catch(e){return true}}function read(){try{return localStorage.getItem(KEY)==='true'}catch(e){return false}}function apply(){document.documentElement.classList.toggle('rails-sidebar-collapsed',read()&&mq())}try{if(read()&&mq())document.documentElement.classList.add('rails-sidebar-collapsed')}catch(e){}function mount(){var pane=document.getElementById('starlight__sidebar');if(!pane||pane.querySelector('[data-rails-sidebar-toggle]'))return;var wrap=document.createElement('div');wrap.className='rails-sidebar-toggle-wrap';var btn=document.createElement('button');btn.type='button';btn.className='rails-sidebar-toggle';btn.setAttribute('data-rails-sidebar-toggle','');btn.setAttribute('aria-controls','starlight__sidebar');var icon=document.createElement('span');icon.className='material-symbols-sharp';icon.setAttribute('aria-hidden','true');btn.appendChild(icon);function updateBtn(){var c=document.documentElement.classList.contains('rails-sidebar-collapsed');btn.setAttribute('aria-expanded',c?'false':'true');btn.setAttribute('aria-label',c?'Expand docs sidebar':'Collapse docs sidebar');icon.textContent=c?'left_panel_open':'left_panel_close'}function toggle(){var next=!document.documentElement.classList.contains('rails-sidebar-collapsed');document.documentElement.classList.toggle('rails-sidebar-collapsed',next);try{localStorage.setItem(KEY,next?'true':'false')}catch(e){}updateBtn()}btn.addEventListener('click',toggle);updateBtn();wrap.appendChild(btn);pane.insertBefore(wrap,pane.firstChild);var mql=matchMedia(MQ);function onMq(){apply();updateBtn()}(mql.addEventListener?mql.addEventListener('change',onMq):mql.addListener(onMq))}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount()})();`,
+          content: `(function(){var KEY='rails-docs-sidebar-collapsed';var MQ='(min-width: 50rem)';function mq(){try{return matchMedia(MQ).matches}catch(e){return true}}function read(){try{return localStorage.getItem(KEY)==='true'}catch(e){return false}}function apply(){document.documentElement.classList.toggle('rails-sidebar-collapsed',read()&&mq())}try{if(read()&&mq())document.documentElement.classList.add('rails-sidebar-collapsed')}catch(e){}function syncAria(){var c=document.documentElement.classList.contains('rails-sidebar-collapsed');document.querySelectorAll('[data-rails-sidebar-toggle]').forEach(function(btn){btn.setAttribute('aria-expanded',c?'false':'true');btn.setAttribute('aria-label',c?'Expand docs sidebar':'Collapse docs sidebar')})}function toggle(){var next=!document.documentElement.classList.contains('rails-sidebar-collapsed');document.documentElement.classList.toggle('rails-sidebar-collapsed',next);try{localStorage.setItem(KEY,next?'true':'false')}catch(e){}syncAria()}document.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('[data-rails-sidebar-toggle]');if(!t)return;e.preventDefault();toggle()});var mql=matchMedia(MQ);function onMq(){apply();syncAria()}(mql.addEventListener?mql.addEventListener('change',onMq):mql.addListener(onMq));document.addEventListener('astro:page-load',function(){apply();syncAria()})})();`,
         },
       ],
       header: {

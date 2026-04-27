@@ -5,7 +5,7 @@ sidebar:
   order: 2
 ---
 
-This page summarizes the **rails-core** layout described in **`rails-core/docs/architecture.md`**. It applies to the open-source multi-service stack, not to proprietary front-end repositories.
+This page summarizes the **rails-core** layout from **`rails-core/docs/architecture.md`**. It describes the open-source multi-service stack behind the HTTP API—not your own product frontends.
 
 ## System diagram
 

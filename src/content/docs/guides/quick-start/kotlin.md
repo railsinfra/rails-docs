@@ -5,8 +5,6 @@ sidebar:
   order: 5
 ---
 
-Use this page with **`rails-sdks/rails-kotlin/README.md`** for coroutine/async clients, `JsonField` behavior, and networking options.
-
 ## Install
 
 **Gradle** (from the SDK README):
@@ -39,4 +37,4 @@ Use the **[API Reference](/api)** tab for endpoint-level detail and cross-langua
 
 ## Runnable sample
 
-Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use **`rails-sdk-samples/kotlin/`** for a hosted Swagger UI workflow.
+Follow **Path A** on the [Quick start overview](/guides/quick-start/) and use <a href="https://github.com/railsinfra/rails-sdk-samples/tree/main/kotlin"><code>rails-sdk-samples/kotlin/</code></a> for a hosted Swagger UI workflow.
