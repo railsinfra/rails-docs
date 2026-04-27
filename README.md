@@ -30,6 +30,12 @@ The **rails-infrastructure** project uses the included `Dockerfile` and `railway
 
 CI runs `pnpm run typecheck` only; the full `astro build` runs on Railway so the Stainless key does not need to live in GitHub unless you add a build job that runs `pnpm run build` with secrets.
 
+### Branch promotion (same as rails-web)
+
+Long-lived branches: **`develop`** → **`staging`** → **`main`**. Feature work merges to `develop` (deploys dev). After a PR **into `develop`** is merged, workflow [`.github/workflows/create-pr-to-next-environment.yml`](.github/workflows/create-pr-to-next-environment.yml) opens a PR **`develop` → `staging`**. After a PR **into `staging`** is merged, it opens **`staging` → `main`**.
+
+Add repository secret **`GH_PAT`**: a [fine-grained or classic PAT](https://github.com/settings/tokens) with **`repo`** scope so the workflow can create pull requests (same pattern as `rails-web`). Without it, the promotion jobs fail fast with a clear error.
+
 ## Setup
 
 ```bash
