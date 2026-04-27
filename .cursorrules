@@ -18,6 +18,7 @@
 ### Aesthetic Direction
 
 - **Visual system:** **Parity with rails-web** — `theme.css` documents alignment with marketing Tailwind **emerald** (`#059669` light accent, darker emerald in dark mode for contrast), **square geometry** (`--sl-button-border-radius: 0`, Mintlify-compat cards squared), **Inter** (body), **Space Grotesk** (headings), **Noto Sans Mono** (code / labels), **Material Symbols Sharp** for repo-owned and mapped UI chrome.
+- **Typography (Inter):** **Inter is intentional** — it matches `rails-web` (`app/layout.tsx`, `theme.css`). Do not swap the body font in `rails-docs` alone unless **rails-web** and design sign-off move together; otherwise docs and marketing drift apart.
 - **Theme:** **Light and dark** (Starlight `data-theme`); custom toggle cycles **light → dark → system**, synced with `starlight-theme` / rails-web behavior.
 - **References (external docs benchmarks):** **[Stripe](https://stripe.com/docs)** (clarity, hierarchy, developer trust) and **[Fern](https://buildwithfern.com)** / Fern-style API docs (consistent multi-language reference, polished nav)—borrow patterns, not assets; stay on brand (emerald, square, Rails marketing link).
 - **References (internal):** Rails marketing site (`PUBLIC_MARKETING_SITE_URL` / “Website” header link); Stainless + Starlight layout patterns.

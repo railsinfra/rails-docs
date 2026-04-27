@@ -15,6 +15,18 @@ import { Callout } from '@stainless-api/docs/components';
   What Rails is, how to start integrating, and where to find HTTP and SDK reference.
 </p>
 
+<section class="rails-intro__exec" aria-labelledby="rails-intro-exec-heading">
+  <h2 id="rails-intro-exec-heading" class="rails-intro__exec-heading">
+    At a glance <span class="rails-intro__exec-badge">for planning</span>
+  </h2>
+  <ul class="rails-intro__exec-list">
+    <li><strong>What it is:</strong> programmable banking infrastructure (users, balances, ledger) behind one API surface.</li>
+    <li><strong>Who uses it:</strong> product and engineering teams shipping fintech, internal tools, or regulated workflows.</li>
+    <li><strong>Why it exists:</strong> keep identity, money movement, and audit trails explicit instead of buried in a single app database.</li>
+    <li><strong>Open source:</strong> inspect and run the core services locally; SDKs match the same spec as this documentation.</li>
+  </ul>
+</section>
+
 <div class="rails-intro__divider" />
 
 <p class="rails-intro__body">
@@ -28,7 +40,7 @@ import { Callout } from '@stainless-api/docs/components';
 <div class="rails-intro__learn-grid not-content">
   <article class="rails-intro__learn-card">
     <div class="rails-intro__learn-head">
-      <div class="rails-intro__icon-box rails-intro__icon-box--orange">
+      <div class="rails-intro__icon-box rails-intro__icon-box--tone-a">
         <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
       </div>
       <h3>How the platform is shaped</h3>
@@ -40,7 +52,7 @@ import { Callout } from '@stainless-api/docs/components';
   </article>
   <article class="rails-intro__learn-card">
     <div class="rails-intro__learn-head">
-      <div class="rails-intro__icon-box rails-intro__icon-box--purple">
+      <div class="rails-intro__icon-box rails-intro__icon-box--tone-b">
         <span class="material-symbols-sharp" aria-hidden="true">terminal</span>
       </div>
       <h3>How to integrate from code</h3>
@@ -93,9 +105,9 @@ Pick a path that matches how much of the stack you want on your machine.
 
 ## Explore
 
-Go deeper into generated reference and runnable examples.
+Generated HTTP reference and snippets. Runnable sample servers are covered in **Quick start** (same paths as below); languages and installs live in **SDK overview**.
 
-<div class="rails-intro__quick-grid">
+<div class="rails-intro__quick-grid rails-intro__quick-grid--single">
   <a class="rails-intro__quick-link" href="/api">
     <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
     <div>
@@ -103,13 +115,11 @@ Go deeper into generated reference and runnable examples.
       <p>HTTP reference and multi-language snippets from the published OpenAPI spec.</p>
     </div>
   </a>
-  <a class="rails-intro__quick-link" href="/guides/quick-start/">
-    <span class="material-symbols-sharp" aria-hidden="true">deployed_code</span>
-    <div>
-      <strong>Runnable samples</strong>
-      <p>Reference servers in rails-sdk-samples in this monorepo with first-request paths.</p>
-    </div>
-  </a>
 </div>
+
+<p class="rails-intro__explore-foot">
+  <strong>Runnable samples:</strong> use <a href="/guides/quick-start/">Quick start</a> for env, ports, and the
+  <code>rails-sdk-samples</code> layout. <a href="/guides/sdk-overview/">SDK overview</a> lists every client and how they map to the spec.
+</p>
 
 </div>

@@ -15,7 +15,8 @@
   /* keep for truly circular controls if any */
   --stl-ui-layout-border-radius-max: 100vmax;
 
-  --stl-color-background: light-dark(#ffffff, #000000);
+  /* Dark: off-black (not pure #000) for long reading and parity with rails-web header surfaces */
+  --stl-color-background: light-dark(#ffffff, #0a0a0a);
   --stl-color-foreground: light-dark(#27272a, #fafafa);
   /*
    * Stainless accent chain derives borders/muted/link from --stl-color-accent.
@@ -490,7 +491,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   scrollbar-width: none;
 }
 
-/* ─── Docs intro landing (Resend-like rhythm: title block, divider, narrow prose, cards) ─── */
+/* ─── Docs intro landing: lead, exec “At a glance”, divider, technical body, cards, grids ─── */
 .stl-content-panel:has(+ .stl-content-panel .rails-intro) {
   padding-bottom: 1.25rem;
   margin-bottom: 0;
@@ -498,7 +499,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
 }
 
 .sl-markdown-content:has(.rails-intro) {
-  max-width: 42rem;
+  max-width: min(52rem, 92vw);
 }
 
 .rails-intro {
@@ -512,7 +513,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
 .rails-intro h2 {
   margin-top: 0;
   margin-bottom: 0.65rem;
-  font-size: clamp(1.05rem, 0.25rem + 1.5vw, 1.2rem);
+  font-size: clamp(1.15rem, 0.35rem + 1.8vw, 1.4rem);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -553,6 +554,47 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   color: light-dark(#3f3f46, #a1a1aa);
 }
 
+.rails-intro__exec {
+  margin-top: 1.25rem;
+  padding: 1rem 1rem 1rem 1rem;
+  border-left: 3px solid light-dark(#059669, #34d399);
+  background: light-dark(#f0fdf4, rgb(6 78 59 / 0.2));
+}
+
+.rails-intro__exec-heading {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1rem, 0.2rem + 1.2vw, 1.15rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: light-dark(#14532d, #ecfdf5);
+}
+
+.rails-intro__exec-badge {
+  margin-left: 0.35rem;
+  font-family: var(--stl-typography-font-mono), 'Noto Sans Mono', ui-monospace, monospace;
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: light-dark(#047857, #6ee7b7);
+  vertical-align: middle;
+}
+
+.rails-intro__exec-list {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: light-dark(#3f3f46, #d4d4d8);
+}
+
+.rails-intro__exec-list strong {
+  color: light-dark(#18181b, #fafafa);
+}
+
 .rails-intro__learn-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -566,7 +608,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   min-height: 0;
   height: 100%;
   border: 1px solid light-dark(#e4e4e7, #27272a);
-  background: light-dark(#fff, #000);
+  background: light-dark(#fff, #0a0a0a);
   padding: 1.25rem;
 }
 
@@ -578,10 +620,10 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
 
 .rails-intro__learn-head h3 {
   margin: 0;
-  font-size: 1.7rem;
+  font-size: clamp(1.05rem, 0.55vw + 0.95rem, 1.2rem);
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.03em;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
 }
 
 .rails-intro__icon-box {
@@ -598,16 +640,17 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   font-size: 1rem;
 }
 
-.rails-intro__icon-box--orange {
-  border-color: light-dark(#fed7aa, rgb(154 52 18 / 0.6));
-  color: light-dark(#c2410c, #fb923c);
-  background: light-dark(#fff7ed, rgb(124 45 18 / 0.25));
+/* Emerald-first tiles (marketing parity); replaces orange/purple accent competition */
+.rails-intro__icon-box--tone-a {
+  border-color: light-dark(#a7f3d0, rgb(16 185 129 / 0.45));
+  color: light-dark(#047857, #34d399);
+  background: light-dark(#ecfdf5, rgb(6 78 59 / 0.35));
 }
 
-.rails-intro__icon-box--purple {
-  border-color: light-dark(#e9d5ff, rgb(107 33 168 / 0.55));
-  color: light-dark(#9333ea, #c084fc);
-  background: light-dark(#faf5ff, rgb(88 28 135 / 0.28));
+.rails-intro__icon-box--tone-b {
+  border-color: light-dark(#d4d4d8, rgb(63 63 70 / 0.85));
+  color: light-dark(#047857, #6ee7b7);
+  background: light-dark(#f4f4f5, rgb(24 24 27 / 0.55));
 }
 
 .rails-intro__learn-card p {
@@ -627,9 +670,34 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   gap: 0.75rem;
 }
 
+.rails-intro__quick-grid--single {
+  grid-template-columns: 1fr;
+  max-width: 38rem;
+}
+
+.rails-intro__explore-foot {
+  margin: 0.85rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: light-dark(#52525b, #a1a1aa);
+}
+
+.rails-intro__explore-foot a {
+  color: light-dark(#047857, #34d399);
+  text-underline-offset: 0.12em;
+}
+
+.rails-intro__explore-foot a:hover {
+  color: light-dark(#065f46, #6ee7b7);
+}
+
+.rails-intro__explore-foot code {
+  font-size: 0.85em;
+}
+
 .rails-intro__quick-link {
   border: 1px solid light-dark(#e4e4e7, #27272a);
-  background: light-dark(#fff, #000);
+  background: light-dark(#fff, #0a0a0a);
   padding: 0.85rem 0.95rem;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -674,7 +742,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   }
 
   .rails-intro__learn-head h3 {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -1047,7 +1115,7 @@ html.rails-sidebar-collapsed .stl-sdk-select [data-part='trigger-icon'] {
   height: 7px;
   transform: rotate(45deg);
   border: 1px solid light-dark(#a1a1aa, #52525b);
-  background: light-dark(#fff, #000);
+  background: light-dark(#fff, #0a0a0a);
 }
 
 .rails-arch-connector > span {
@@ -1062,7 +1130,7 @@ html.rails-sidebar-collapsed .stl-sdk-select [data-part='trigger-icon'] {
 .rails-arch-api {
   width: min(100%, 22rem);
   border: 1px solid light-dark(#d4d4d8, #3f3f46);
-  background: light-dark(#fff, #000);
+  background: light-dark(#fff, #0a0a0a);
   padding: 0.85rem;
   position: relative;
 }
@@ -1168,7 +1236,7 @@ html[data-theme='dark'] .stl-theme-toggle:hover {
   border-radius: 0;
   padding: 1.25rem;
   gap: 0.9rem;
-  background: light-dark(#ffffff, #000000);
+  background: light-dark(#ffffff, #0a0a0a);
 }
 
 .stl-overview .stldocs-language-block-content {
@@ -1248,7 +1316,7 @@ html[data-theme='dark'] .stl-theme-toggle:hover {
   padding: 0.35rem 0.7rem;
   border-color: light-dark(#e4e4e7, #27272a);
   color: light-dark(#3f3f46, #d4d4d8);
-  background: light-dark(#ffffff, #000000);
+  background: light-dark(#ffffff, #0a0a0a);
 }
 
 .stl-overview .stldocs-language-block-links > a:hover {
