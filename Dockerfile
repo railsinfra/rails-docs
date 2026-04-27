@@ -40,7 +40,12 @@ RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
 
 FROM base AS runner
 ENV NODE_ENV=production
-RUN npm install -g serve@14.2.4
-COPY --from=builder /app/dist ./dist
+# Install serve as root, then drop privileges: static file server does not need root at runtime.
+RUN npm install -g serve@14.2.4 \
+  && groupadd --system railsdocs \
+  && useradd --system --gid railsdocs --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin railsdocs
+WORKDIR /app
+COPY --from=builder --chown=railsdocs:railsdocs /app/dist ./dist
+USER railsdocs
 EXPOSE 3000
 CMD ["sh", "-c", "serve dist -l \"tcp://0.0.0.0:${PORT:-3000}\""]
