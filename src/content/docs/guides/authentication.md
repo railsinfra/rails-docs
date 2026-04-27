@@ -5,7 +5,7 @@ sidebar:
   order: 3
 ---
 
-Rails APIs expect you to authenticate **server-side** with an **API key** (and to call the correct **base URL** for your environment). Do not embed secrets in client-side web bundles.
+Call the Rails APIs **from your server** (or local tooling) with an **API key**, and use the **base URL** you were given for that environment (staging vs production, and so on). Never put API keys in browser bundles or public repos.
 
 ## What you configure
 

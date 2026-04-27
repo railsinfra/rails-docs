@@ -5,11 +5,11 @@ sidebar:
   order: 1
 ---
 
-You can integrate in two common ways: **reference sample apps** that proxy the public HTTP API, or the **rails-core** repository for a full local gateway and services.
+You can integrate in two common ways: **small sample servers** in `rails-sdk-samples/` that call a Rails host you already have access to, or the **`rails-core`** repo to run the full gateway and backing services on your machine.
 
 ## Official SDKs
 
-For install commands and client setup straight from each generated library, open a language page below. Each page mirrors **`rails-sdks/<sdk>/README.md`** and points you to the **API Reference** tab for endpoints and snippets.
+For install commands and how to construct a client in each language, open a page below. Each page matches the **`rails-sdks/<sdk>/README.md`** in this repo and links you to the **API Reference** tab for URLs and snippets.
 
 - [TypeScript](./typescript/) — `rails-sdks/rails-typescript/`
 - [Go](./go/) — `rails-sdks/rails-go/`
@@ -19,7 +19,7 @@ For install commands and client setup straight from each generated library, open
 
 ## Path A — SDK samples (fastest “first request”)
 
-Use this when you already have a **base URL** and **server API key** from your onboarding (not when you need to provision databases yourself).
+Use this when someone has already given you a **base URL** and **server API key** for a hosted environment. Skip this path if you still need to create databases or run the core services yourself.
 
 1. In this monorepo, open **`rails-sdk-samples/`** (see that folder’s `README.md` for the full matrix).
 2. Choose a language folder (`typescript/`, `go/`, `java/`, `kotlin/`, or `csharp/`), install dependencies, and copy **`.env.example`** to **`.env`**.
@@ -32,7 +32,7 @@ Samples ship **Swagger UI** and **`/openapi.json`** so you can exercise routes a
 
 ## Path B — rails-core on your machine
 
-Use this when you need the **gateway**, **users**, **accounts**, and **ledger** services together for development or contract testing.
+Use this when you want the **gateway**, **users**, **accounts**, and **ledger** services running together on localhost—for deeper development or contract testing against your own stack.
 
 1. Clone **`rails-core`** (see `rails-core/README.md` in this monorepo or the upstream repository).
 2. Copy **`.env.example`** to **`.env`** and set database URLs (`NEON_API_KEY` for automated Neon setup, or `USERS_DATABASE_URL`, `ACCOUNTS_DATABASE_URL`, `LEDGER_DATABASE_URL`, and `AUDIT_DATABASE_URL` manually—details in `rails-core/docs/quickstart.md`).

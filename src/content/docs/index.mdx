@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Banking APIs for identity, accounts, and ledger—typed SDKs and guides in one docs site.
+description: Guides and API reference for Rails banking APIs—users, accounts, ledger, and official SDKs.
 sidebar:
   order: 0
 ---
@@ -12,7 +12,7 @@ import { Callout } from '@stainless-api/docs/components';
 <div class="rails-intro__breadcrumbs label-micro">Getting started <span>›</span> Introduction</div>
 
 <p class="rails-intro__lead">
-  What Rails is, how to start integrating, and where to find HTTP and SDK reference.
+  Learn what Rails offers, how to run your first request, and where to read HTTP details and SDK examples.
 </p>
 
 <section class="rails-intro__exec" aria-labelledby="rails-intro-exec-heading">
@@ -20,19 +20,19 @@ import { Callout } from '@stainless-api/docs/components';
     At a glance <span class="rails-intro__exec-badge">for planning</span>
   </h2>
   <ul class="rails-intro__exec-list">
-    <li><strong>What it is:</strong> programmable banking infrastructure (users, balances, ledger) behind one API surface.</li>
-    <li><strong>Who uses it:</strong> product and engineering teams shipping fintech, internal tools, or regulated workflows.</li>
-    <li><strong>Why it exists:</strong> keep identity, money movement, and audit trails explicit instead of buried in a single app database.</li>
-    <li><strong>Open source:</strong> inspect and run the core services locally; SDKs match the same spec as this documentation.</li>
+    <li><strong>What it is:</strong> banking infrastructure you call over HTTP—users, balances, and a ledger behind one API.</li>
+    <li><strong>Who uses it:</strong> product and engineering teams building fintech, internal tools, or regulated money flows.</li>
+    <li><strong>Why it exists:</strong> keep identity, transfers, and audit history explicit instead of hiding them inside one application database.</li>
+    <li><strong>Open source:</strong> you can read and run the core services locally; the published SDKs follow the same API this site documents.</li>
   </ul>
 </section>
 
 <div class="rails-intro__divider" />
 
 <p class="rails-intro__body">
-  <strong>Rails</strong> is banking infrastructure: identity, accounts, and a double-entry ledger behind a
-  single gateway. You use it when you need programmatic control over users, balances, and financial
-  finality—without folding those concerns into one database or one deployable.
+  <strong>Rails</strong> is banking infrastructure: identity, accounts, and a double-entry ledger behind one
+  gateway. Use it when you need code-driven control of users, balances, and money movement that must
+  complete fully or not at all—without packing all of that into a single database or deployable.
 </p>
 
 ## What you will learn
@@ -46,8 +46,9 @@ import { Callout } from '@stainless-api/docs/components';
       <h3>How the platform is shaped</h3>
     </div>
     <p>
-      Bounded services (users, accounts, ledger) keep blast radius small and contracts explicit. Guides
-      explain how the pieces fit and how to run samples or the open-source core locally.
+      Users, accounts, and ledger run as separate services so a failure in one area is less likely to take
+      down everything, and each service has a clear contract. Guides explain how the pieces connect and
+      how to run samples or the open-source stack on your laptop.
     </p>
   </article>
   <article class="rails-intro__learn-card">
@@ -58,68 +59,71 @@ import { Callout } from '@stainless-api/docs/components';
       <h3>How to integrate from code</h3>
     </div>
     <p>
-      Official SDKs are generated from the same OpenAPI spec as this site, so types and routes stay
-      aligned. Pair guides with the API Reference tab for every path, body, and snippet.
+      Official SDKs are built from the same API description as this site, so method names and routes stay
+      aligned with what you read here. Use guides for concepts, then open the API Reference tab for paths,
+      request bodies, and copy-ready examples.
     </p>
   </article>
 </div>
 
 <Callout variant="info">
-  For every endpoint, request body, and SDK example, use the **API Reference** tab. It tracks the Stainless project and published clients.
+  For exact URLs, request and response shapes, and per-language snippets, use the **API Reference** tab. It
+  stays aligned with the published SDKs you install from package managers.
 </Callout>
 
 ## Quickstart
 
-Pick a path that matches how much of the stack you want on your machine.
+Choose how much you want to run locally: sample apps only, or the full open-source services.
 
 <div class="rails-intro__quick-grid">
   <a class="rails-intro__quick-link" href="/guides/quick-start/">
     <span class="material-symbols-sharp" aria-hidden="true">play_arrow</span>
     <div>
       <strong>Quick start</strong>
-      <p>First requests, env vars, ports, and when to use SDK samples versus rails-core.</p>
+      <p>First requests, environment variables, ports, and when to use SDK samples versus the full rails-core stack.</p>
     </div>
   </a>
   <a class="rails-intro__quick-link" href="/guides/authentication/">
     <span class="material-symbols-sharp" aria-hidden="true">shield_person</span>
     <div>
       <strong>Authentication</strong>
-      <p>Server API keys, base URL, and TLS expectations in development.</p>
+      <p>Where to put API keys, which base URL to call, and what to expect for HTTPS in development.</p>
     </div>
   </a>
   <a class="rails-intro__quick-link" href="/guides/architecture/">
     <span class="material-symbols-sharp" aria-hidden="true">account_tree</span>
     <div>
       <strong>Architecture</strong>
-      <p>Gateway routing, service boundaries, and contracts between HTTP surfaces.</p>
+      <p>How requests reach the gateway, which service owns what, and how HTTP routes map to backends.</p>
     </div>
   </a>
   <a class="rails-intro__quick-link" href="/guides/sdk-overview/">
     <span class="material-symbols-sharp" aria-hidden="true">terminal</span>
     <div>
       <strong>SDK overview</strong>
-      <p>Languages, install notes, and how Stainless clients map to the spec.</p>
+      <p>Supported languages, install commands, and how each client lines up with the HTTP API.</p>
     </div>
   </a>
 </div>
 
 ## Explore
 
-Generated HTTP reference and snippets. Runnable sample servers are covered in **Quick start** (same paths as below); languages and installs live in **SDK overview**.
+Browse the live HTTP catalog and per-language snippets. For runnable demo servers and repo layout, follow **Quick start**; for install commands per language, see **SDK overview**.
 
 <div class="rails-intro__quick-grid rails-intro__quick-grid--single">
   <a class="rails-intro__quick-link" href="/api">
     <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
     <div>
       <strong>API Reference</strong>
-      <p>HTTP reference and multi-language snippets from the published OpenAPI spec.</p>
+      <p>Every route, with request and response examples and snippets in each supported language.</p>
     </div>
   </a>
 </div>
 
 <p class="rails-intro__explore-foot">
-  <strong>Runnable samples:</strong> use <a href="/guides/quick-start/">Quick start</a> for env, ports, and the
-  <code>rails-sdk-samples</code> layout. <a href="/guides/sdk-overview/">SDK overview</a> lists every client and how they map to the spec.
+  <strong>Runnable samples:</strong> step-by-step setup is in <a href="/guides/quick-start/">Quick start</a>
+  (including the <code>rails-sdk-samples</code> folders). <a href="/guides/sdk-overview/">SDK overview</a>
+  lists each client package and how it maps to the HTTP API.
 </p>
 
 </div>
