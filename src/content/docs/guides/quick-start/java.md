@@ -5,8 +5,6 @@ sidebar:
   order: 4
 ---
 
-Use this page with **`rails-sdks/rails-java/README.md`** for async clients, raw responses, networking options, and error types.
-
 ## Install
 
 **Gradle** (from the SDK README):

@@ -5,8 +5,6 @@ sidebar:
   order: 6
 ---
 
-Use this page with **`rails-sdks/rails-csharp/README.md`** for raw responses, retries, proxies, and undocumented parameters.
-
 ## Install
 
 The SDK README documents consuming the generated source from the repository:

@@ -5,8 +5,6 @@ sidebar:
   order: 3
 ---
 
-Use this page with **`rails-sdks/rails-go/README.md`** in the monorepo for request structs, pagination, errors, and middleware.
-
 ## Install
 
 Import the module (imported as **`rails`** in the README examples):

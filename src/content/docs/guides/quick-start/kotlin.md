@@ -5,8 +5,6 @@ sidebar:
   order: 5
 ---
 
-Use this page with **`rails-sdks/rails-kotlin/README.md`** for coroutine/async clients, `JsonField` behavior, and networking options.
-
 ## Install
 
 **Gradle** (from the SDK README):

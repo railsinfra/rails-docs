@@ -5,8 +5,6 @@ sidebar:
   order: 2
 ---
 
-Use this page with **`rails-sdks/rails-typescript/README.md`** in the monorepo for the full API surface, retries, timeouts, and advanced usage.
-
 ## Install
 
 From the SDK README:
