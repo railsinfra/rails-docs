@@ -16,15 +16,21 @@
 # Railway: platform docs still describe build-time vars as ARG; the builder must supply this
 # secret (equivalent to the CLI flag above). If builds fail with "secret not found", confirm
 # Railway passes BuildKit secrets for service variables or build the image in CI and deploy a prebuilt image.
+#
+# Railway cache mounts: `id` must be exactly `s/<service-id>-<absolute target path>` (no variables).
+# Replace the UUID below with your service ID (Dashboard → service → copy ID from URL or settings)
+# when forking this image to another Railway service; other builders ignore the opaque id.
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
+ENV PNPM_STORE_PATH="/pnpm/store"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/pnpm/store,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
@@ -49,7 +55,8 @@ RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
 FROM base AS runner
 ENV NODE_ENV=production
 # Install serve as root, then drop privileges: static file server does not need root at runtime.
-RUN npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
+RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/root/.npm,target=/root/.npm \
+    npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
   && groupadd --system railsdocs \
   && useradd --system --gid railsdocs --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin railsdocs
 WORKDIR /app
