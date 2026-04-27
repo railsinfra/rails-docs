@@ -1,4 +1,5 @@
-ignoredBuiltDependencies:
-  - esbuild
-  - protobufjs
-  - sharp
+# Single-package “workspace” (required by pnpm when this file exists). Build settings that
+# belong in package.json (e.g. pnpm.onlyBuiltDependencies) stay there to avoid an empty
+# or invalid `packages` list, which makes `pnpm install` fail (Railway Railpack, Docker, CI).
+packages:
+  - "."
