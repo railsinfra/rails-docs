@@ -1,0 +1,45 @@
+# rails-docs — AI / editor context
+
+## Design Context
+
+### Users
+
+- **Primary audience:** Software engineers and technical integrators building on **Rails banking infrastructure** (identity, accounts, ledger, typed SDKs, HTTP APIs).
+- **Secondary audience:** **Business analysts, scrum masters, and executives** — skim guides and intro pages for scope, risk, and planning; they need plain-language summaries, obvious navigation, and credible presentation without assuming deep API literacy.
+- **Context of use:** Deep work for engineers (guides, SDK quick starts, **API reference**); lighter passes for leadership/planning. Often alongside an IDE, samples repo, or staging environment.
+- **Job to be done:** Engineers ship correct integrations; secondary readers gain **enough understanding to align teams and stakeholders** without decorative fluff.
+
+### Brand Personality
+
+- **Three words (product intent):** **Simple**, **Open Source**, **Trust** — copy and IA should feel approachable and inspectable, not black-box; visuals stay aligned with **rails-web** (emerald, sharp geometry) so marketing and docs feel like one product.
+- **Voice:** Clear, direct prose; **intro landing** (`index.mdx`) uses structured sections, micro-labels (`label-micro`), and icon-led cards—competent and calm, not hype-driven.
+- **Emotional goals:** **Trust** and **clarity** first; any “delight” is functional (readable types, obvious navigation, resilient theme toggle).
+
+### Aesthetic Direction
+
+- **Visual system:** **Parity with rails-web** — `theme.css` documents alignment with marketing Tailwind **emerald** (`#059669` light accent, darker emerald in dark mode for contrast), **square geometry** (`--sl-button-border-radius: 0`, Mintlify-compat cards squared), **Inter** (body), **Space Grotesk** (headings), **Noto Sans Mono** (code / labels), **Material Symbols Sharp** for repo-owned and mapped UI chrome.
+- **Theme:** **Light and dark** (Starlight `data-theme`); custom toggle cycles **light → dark → system**, synced with `starlight-theme` / rails-web behavior.
+- **References (external docs benchmarks):** **[Stripe](https://stripe.com/docs)** (clarity, hierarchy, developer trust) and **[Fern](https://buildwithfern.com)** / Fern-style API docs (consistent multi-language reference, polished nav)—borrow patterns, not assets; stay on brand (emerald, square, Rails marketing link).
+- **References (internal):** Rails marketing site (`PUBLIC_MARKETING_SITE_URL` / “Website” header link); Stainless + Starlight layout patterns.
+- **Anti-patterns:** Rounded “friendly SaaS” chrome that breaks marketing parity; replacing upstream SDK language logos or Pagefind UI; ad-hoc color palettes that diverge from emerald / zinc neutrals documented in `theme.css`.
+
+### Design Principles
+
+1. **Marketing parity first** — Docs chrome (accent, borders, typography, icons, radii) should feel like the same product family as **rails-web**; prefer extending `theme.css` and `astro.config.ts` fonts/head over one-off overrides in content.
+2. **Respect upstream boundaries** — Do not restyle **SDK logos** in library cards, **`middleware.stainless.tsx` snippet icons**, **`rails-logo.svg`**, or **Pagefind** internals unless upgrading the docs platform; map Lucide-like / inline SVG patterns to **Material Symbols Sharp** only where `theme.css` already establishes that contract.
+3. **Square, sharp, serious** — Keep **zero border-radius** defaults for Stainless/Starlight cards/buttons unless a control truly needs `--stl-ui-layout-border-radius-max` (circular affordances).
+4. **Integrator-grade readability** — Favor scannable headings, tables, and callouts; meet **WCAG 2.1 AA** for new custom UI (contrast, focus, labels). Preserve **WCAG-aware** accent choices (see `theme.css` comments on dark-mode emerald). Deep TOC (`minHeadingLevel` 2–4) supports long guides.
+5. **Predictable navigation** — Preserve **Guides** vs **API Reference** tabs, sidebar autogenerate rules, and **no SDK dropdown** in sidebar (`SidebarNoSdkSelect`); collapsible sidebar state is user-persisted—do not break `rails-docs-sidebar-collapsed` / `data-rails-sidebar-toggle` behavior without migration notes.
+
+### Accessibility & quality bar
+
+- **Target:** **WCAG 2.1 Level AA** for new custom UI (including contrast, focus visibility, naming).
+- Theme toggle must keep **accurate `aria-label`** strings per mode (see `ThemeToggleSimple.astro`).
+- Focus states: accent buttons use **visible focus rings** (`theme.css` `.stl-ui-button--accent:focus-visible`).
+- Prefer semantic HTML from Starlight/Stainless; when adding custom components, match existing **aria** and **keyboard** patterns.
+
+---
+
+## Repository workflow
+
+- **All changes ship from a feature branch** — do not commit directly to `main` / `develop` / `staging` for this repo. Branch from the appropriate base (e.g. `develop`), open a PR, merge via review.
