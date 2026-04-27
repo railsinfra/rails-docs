@@ -10,10 +10,10 @@ sidebar:
 From the SDK README:
 
 ```sh
-npm install railsinfra
+npm install @railsinfra/rails-typescript
 ```
 
-The package is published as **`railsinfra`** on npm (see the README badge and installation section).
+The client is published on npm as **`@railsinfra/rails-typescript`** (see the SDK README for the current version and import path).
 
 ## Configure and call the API
 
