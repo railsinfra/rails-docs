@@ -1,5 +1,9 @@
-# syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.10
 # Build Astro + Starlight (Stainless) static site, then serve with `serve` on $PORT.
+#
+# Security (runner): static `dist/` is copied as root, then chmod clears write bits and
+# special mode bits for u/g/o so the non-root process cannot mutate site content (immutable
+# payload). Runtime user is not the owner of `dist/`, so it cannot chmod its way to writes.
 #
 # The Stainless API key must be passed as a BuildKit secret (not ARG/ENV) so it is not
 # persisted in image metadata or layers. See: https://docs.docker.com/build/building/secrets/
@@ -41,11 +45,20 @@ RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
 FROM base AS runner
 ENV NODE_ENV=production
 # Install serve as root, then drop privileges: static file server does not need root at runtime.
-RUN npm install -g serve@14.2.4 \
+RUN npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
   && groupadd --system railsdocs \
   && useradd --system --gid railsdocs --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin railsdocs
 WORKDIR /app
-COPY --from=builder --chown=railsdocs:railsdocs /app/dist ./dist
+# Explicit root ownership on copy (default) documents intent; runtime user must not own dist.
+# Strip write and special mode bits after copy so the tree stays immutable at runtime.
+COPY --from=builder --chown=root:root /app/dist ./dist
+RUN set -eu \
+  && chown -R root:root /app/dist \
+  && chmod -R a-st,a-w,a+rX /app/dist
 USER railsdocs
 EXPOSE 3000
-CMD ["sh", "-c", "serve dist -l \"tcp://0.0.0.0:${PORT:-3000}\""]
+# HTTP probe uses Node already in the image (no extra packages); honors $PORT from the orchestrator.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=25s --retries=3 \
+  CMD node -e "require('http').get('http://127.0.0.1:'+(process.env.PORT||3000)+'/',(r)=>{r.resume();process.exit(r.statusCode<500?0:1)}).on('error',()=>process.exit(1))"
+STOPSIGNAL SIGTERM
+CMD ["sh", "-c", "exec serve dist -l \"tcp://0.0.0.0:${PORT:-3000}\""]
