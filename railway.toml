@@ -1,3 +1,7 @@
+# This repository is the docs app at its git root (Dockerfile here). If the Railway service
+# has Settings → Root directory = `rails-docs`, GitHub Actions deploy uses
+# `scripts/railway-up-nested-root.sh` so the uploaded archive matches that layout. If Root
+# directory is empty, set RAILWAY_UP_FLAT=1 on the deploy job and deploy from repo root instead.
 [build]
 builder = "dockerfile"
 dockerfilePath = "Dockerfile"
