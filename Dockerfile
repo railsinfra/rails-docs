@@ -1,24 +1,22 @@
-# syntax=docker/dockerfile:1.10
+# syntax=docker/dockerfile:1.4
 # Build Astro + Starlight (Stainless) static site, then serve with `serve` on $PORT.
 #
 # Security (runner): static `dist/` is copied as root, then chmod clears write bits and
 # special mode bits for u/g/o so the non-root process cannot mutate site content (immutable
 # payload). Runtime user is not the owner of `dist/`, so it cannot chmod its way to writes.
 #
-# The Stainless API key must be passed as a BuildKit secret (not ARG/ENV) so it is not
-# persisted in image metadata or layers. See: https://docs.docker.com/build/building/secrets/
+# Railway's Docker builder currently rejects non-cache `RUN --mount=...` forms, so this image
+# reads STAINLESS_API_KEY from a build ARG in the builder stage (not persisted in final runtime env).
 #
 # Local / CI example:
 #   export STAINLESS_API_KEY=stl_sk_...
-#   docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY \
+#   docker buildx build --build-arg STAINLESS_API_KEY=stl_sk_... \
 #     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
 #
-# Railway: platform docs still describe build-time vars as ARG; the builder must supply this
-# secret (equivalent to the CLI flag above). If builds fail with "secret not found", confirm
-# Railway passes BuildKit secrets for service variables or build the image in CI and deploy a prebuilt image.
+# Railway: set STAINLESS_API_KEY as a service variable so it is available at build time.
 #
-# Railway BuildKit cache: `RUN --mount=type=cache,id=s/<service-id>-<abs path>,target=<path>` requires the
-# **literal** deploying service UUID (no ARG/env in `id`). A wrong UUID causes build failures (e.g.
+# Railway BuildKit cache requires a service-specific cache ID tied to the target path and does
+# not support ARG/env interpolation for that ID. A wrong value causes build failures (e.g.
 # "Cache mount ID is not prefixed with cache key"). This Dockerfile omits cache mounts so one image
 # builds on Railway, GitHub Actions, and local Docker; for per-service Railway cache, use a forked
 # Dockerfile with your service id or set RAILWAY_DOCKERFILE_PATH to such a file. See:
@@ -36,6 +34,7 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
+ARG STAINLESS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 # Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
 # still trims the client context for local builds — keep it aligned with these paths.
@@ -43,13 +42,13 @@ COPY astro.config.ts middleware.stainless.tsx package.json pnpm-lock.yaml pnpm-w
 COPY public ./public
 COPY scripts ./scripts
 COPY src ./src
-RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
-    sh -c 'set -e; \
+RUN sh -c 'set -e; \
       if [ -z "${STAINLESS_API_KEY:-}" ]; then \
         echo "STAINLESS_API_KEY is not available for this build step." >&2; \
-        echo "Pass a BuildKit secret, e.g.: docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY ." >&2; \
+        echo "Pass a build arg, e.g.: docker buildx build --build-arg STAINLESS_API_KEY=stl_sk_... ." >&2; \
         exit 1; \
       fi; \
+      export STAINLESS_API_KEY; \
       export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
       pnpm run build'
 
