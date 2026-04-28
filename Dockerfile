@@ -5,11 +5,14 @@
 # special mode bits for u/g/o so the non-root process cannot mutate site content (immutable
 # payload). Runtime user is not the owner of `dist/`, so it cannot chmod its way to writes.
 #
-# Railway's Docker builder currently rejects non-cache `RUN --mount=...` forms, so this image
-# does not rely on BuildKit mount directives for build-time secrets.
+# Railway's Docker builder currently rejects non-cache `RUN --mount=...` forms. For Stainless
+# docs builds, Railway provides build-time variables via ARG declarations in the builder stage.
 #
 # Local / CI example:
-#   docker buildx build --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
+#   docker buildx build \
+#     --build-arg STAINLESS_API_KEY=stl_sk_... \
+#     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example \
+#     -t rails-docs:local .
 #
 # Railway BuildKit cache requires a service-specific cache ID tied to the target path and does
 # not support ARG/env interpolation for that ID. A wrong value causes build failures (e.g.
@@ -30,6 +33,7 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
+ARG STAINLESS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 # Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
 # still trims the client context for local builds — keep it aligned with these paths.
@@ -38,6 +42,12 @@ COPY public ./public
 COPY scripts ./scripts
 COPY src ./src
 RUN sh -c 'set -e; \
+      if [ -z "${STAINLESS_API_KEY:-}" ]; then \
+        echo "STAINLESS_API_KEY is not available for this build step." >&2; \
+        echo "Set STAINLESS_API_KEY as a Railway service variable (build-time) or pass --build-arg STAINLESS_API_KEY=... locally." >&2; \
+        exit 1; \
+      fi; \
+      export STAINLESS_API_KEY; \
       export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
       pnpm run build'
 
