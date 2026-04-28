@@ -56,6 +56,7 @@ jobs:
             echo "::error::RAILWAY_TOKEN not set for production. Add it in Settings → Environments → production (project token for production environment)."
             exit 1
           fi
-          railway up --service rails-docs-production --detach
+          bash scripts/railway-up-nested-root.sh rails-docs-production
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_UP_FLAT: ${{ vars.RAILWAY_UP_FLAT }}
