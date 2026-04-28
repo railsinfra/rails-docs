@@ -9,7 +9,7 @@ set -euo pipefail
 
 SERVICE="${1:?Usage: $0 <railway-service-name> [extra args passed to railway up]}"
 
-if [ -z "${RAILWAY_TOKEN:-}" ]; then
+if [[ -z "${RAILWAY_TOKEN:-}" ]]; then
   echo "error: RAILWAY_TOKEN is not set" >&2
   exit 1
 fi
@@ -17,19 +17,19 @@ fi
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$REPO_ROOT"
 
-if [ "${RAILWAY_UP_FLAT:-0}" = "1" ]; then
+if [[ "${RAILWAY_UP_FLAT:-0}" = "1" ]]; then
   echo "RAILWAY_UP_FLAT=1: deploying from repo root (no rails-docs/ wrapper)."
   shift || true
   exec railway up --service "$SERVICE" --detach "$@"
 fi
 
-if [ ! -f Dockerfile ]; then
+if [[ ! -f Dockerfile ]]; then
   echo "error: Dockerfile not found at $REPO_ROOT/Dockerfile" >&2
   exit 1
 fi
 
 TMP=$(mktemp -d)
-cleanup() { rm -rf "$TMP"; }
+cleanup() { rm -rf "$TMP"; return 0; }
 trap cleanup EXIT
 
 mkdir -p "$TMP/rails-docs"

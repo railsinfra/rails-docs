@@ -6,14 +6,10 @@
 # payload). Runtime user is not the owner of `dist/`, so it cannot chmod its way to writes.
 #
 # Railway's Docker builder currently rejects non-cache `RUN --mount=...` forms, so this image
-# reads STAINLESS_API_KEY from a build ARG in the builder stage (not persisted in final runtime env).
+# does not rely on BuildKit mount directives for build-time secrets.
 #
 # Local / CI example:
-#   export STAINLESS_API_KEY=stl_sk_...
-#   docker buildx build --build-arg STAINLESS_API_KEY=stl_sk_... \
-#     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
-#
-# Railway: set STAINLESS_API_KEY as a service variable so it is available at build time.
+#   docker buildx build --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
 #
 # Railway BuildKit cache requires a service-specific cache ID tied to the target path and does
 # not support ARG/env interpolation for that ID. A wrong value causes build failures (e.g.
@@ -34,7 +30,6 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
-ARG STAINLESS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 # Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
 # still trims the client context for local builds — keep it aligned with these paths.
@@ -43,12 +38,6 @@ COPY public ./public
 COPY scripts ./scripts
 COPY src ./src
 RUN sh -c 'set -e; \
-      if [ -z "${STAINLESS_API_KEY:-}" ]; then \
-        echo "STAINLESS_API_KEY is not available for this build step." >&2; \
-        echo "Pass a build arg, e.g.: docker buildx build --build-arg STAINLESS_API_KEY=stl_sk_... ." >&2; \
-        exit 1; \
-      fi; \
-      export STAINLESS_API_KEY; \
       export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
       pnpm run build'
 
