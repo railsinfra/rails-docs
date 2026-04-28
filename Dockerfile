@@ -1,40 +1,39 @@
-# syntax=docker/dockerfile:1.10
+# syntax=docker/dockerfile:1.4
 # Build Astro + Starlight (Stainless) static site, then serve with `serve` on $PORT.
 #
 # Security (runner): static `dist/` is copied as root, then chmod clears write bits and
 # special mode bits for u/g/o so the non-root process cannot mutate site content (immutable
 # payload). Runtime user is not the owner of `dist/`, so it cannot chmod its way to writes.
 #
-# The Stainless API key must be passed as a BuildKit secret (not ARG/ENV) so it is not
-# persisted in image metadata or layers. See: https://docs.docker.com/build/building/secrets/
+# Railway's Docker builder currently rejects non-cache `RUN --mount=...` forms. For Stainless
+# docs builds, Railway provides build-time variables via ARG declarations in the builder stage.
 #
 # Local / CI example:
-#   export STAINLESS_API_KEY=stl_sk_...
-#   docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY \
-#     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example -t rails-docs:local .
+#   docker buildx build \
+#     --build-arg STAINLESS_API_KEY=stl_sk_... \
+#     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example \
+#     -t rails-docs:local .
 #
-# Railway: platform docs still describe build-time vars as ARG; the builder must supply this
-# secret (equivalent to the CLI flag above). If builds fail with "secret not found", confirm
-# Railway passes BuildKit secrets for service variables or build the image in CI and deploy a prebuilt image.
-#
-# Railway cache mounts: `id` must be exactly `s/<service-id>-<absolute target path>` (no variables).
-# Replace the UUID below with your service ID (Dashboard → service → copy ID from URL or settings)
-# when forking this image to another Railway service; other builders ignore the opaque id.
+# Railway BuildKit cache requires a service-specific cache ID tied to the target path and does
+# not support ARG/env interpolation for that ID. A wrong value causes build failures (e.g.
+# "Cache mount ID is not prefixed with cache key"). This Dockerfile omits cache mounts so one image
+# builds on Railway, GitHub Actions, and local Docker; for per-service Railway cache, use a forked
+# Dockerfile with your service id or set RAILWAY_DOCKERFILE_PATH to such a file. See:
+# https://docs.railway.com/guides/dockerfiles#cache-mounts
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 ENV PNPM_HOME="/pnpm"
-ENV PNPM_STORE_PATH="/pnpm/store"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@9.15.5 --activate
 
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/pnpm/store,target=/pnpm/store \
-    pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
+ARG STAINLESS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 # Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
 # still trims the client context for local builds — keep it aligned with these paths.
@@ -42,21 +41,20 @@ COPY astro.config.ts middleware.stainless.tsx package.json pnpm-lock.yaml pnpm-w
 COPY public ./public
 COPY scripts ./scripts
 COPY src ./src
-RUN --mount=type=secret,id=stainless_api_key,env=STAINLESS_API_KEY \
-    sh -c 'set -e; \
+RUN sh -c 'set -e; \
       if [ -z "${STAINLESS_API_KEY:-}" ]; then \
         echo "STAINLESS_API_KEY is not available for this build step." >&2; \
-        echo "Pass a BuildKit secret, e.g.: docker buildx build --secret id=stainless_api_key,env=STAINLESS_API_KEY ." >&2; \
+        echo "Set STAINLESS_API_KEY as a Railway service variable (build-time) or pass --build-arg STAINLESS_API_KEY=... locally." >&2; \
         exit 1; \
       fi; \
+      export STAINLESS_API_KEY; \
       export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
       pnpm run build'
 
 FROM base AS runner
 ENV NODE_ENV=production
 # Install serve as root, then drop privileges: static file server does not need root at runtime.
-RUN --mount=type=cache,id=s/1ec2a739-0500-4a99-9bf5-9eb96799e12d-/root/.npm,target=/root/.npm \
-    npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
+RUN npm install -g --ignore-scripts --omit=dev serve@14.2.4 \
   && groupadd --system railsdocs \
   && useradd --system --gid railsdocs --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin railsdocs
 WORKDIR /app

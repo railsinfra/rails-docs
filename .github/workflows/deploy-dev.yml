@@ -58,6 +58,6 @@ jobs:
             echo "::error::RAILWAY_TOKEN is not set. Add it in Settings → Environments → development, or in repository secrets, using a project token (Railway project → Settings → Tokens for the dev environment)."
             exit 1
           fi
-          railway up --service rails-docs --detach
+          railway up --service rails-docs --environment dev --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
