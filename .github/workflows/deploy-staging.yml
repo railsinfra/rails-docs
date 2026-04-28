@@ -56,7 +56,6 @@ jobs:
             echo "::error::RAILWAY_TOKEN not set for staging. Add it in Settings → Environments → staging (project token for staging environment)."
             exit 1
           fi
-          bash scripts/railway-up-nested-root.sh rails-docs-staging
+          railway up --service rails-docs-staging --environment staging --detach
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_UP_FLAT: ${{ vars.RAILWAY_UP_FLAT }}
