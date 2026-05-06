@@ -13,7 +13,7 @@ For install commands and how to construct a client in each language, open a page
 
 - [TypeScript](./typescript/) — `rails-sdks/rails-typescript/`
 - [Go](./go/) — `rails-sdks/rails-go/`
-- [Java](./java/) — `rails-sdks/rails-java/`
+- [Java](./java/) — `rails-sdks/java/`
 - [Kotlin](./kotlin/) — `rails-sdks/rails-kotlin/`
 - [C#](./csharp/) — `rails-sdks/rails-csharp/`
 
