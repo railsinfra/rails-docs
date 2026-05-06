@@ -21,11 +21,10 @@
   --stl-color-background: light-dark(#ffffff, #0a0a0a);
   --stl-color-foreground: light-dark(#27272a, #fafafa);
   /*
-   * Stainless accent chain derives borders/muted/link from --stl-color-accent.
-   * Light: emerald-600 (#059669). Dark: same hue, slightly deeper (#047857 emerald-700) so
-   * white label on solid accent stays WCAG-AA friendly; links still read as marketing green.
+   * Active-state accent should match rails-web chrome (zinc/black), while docs-specific
+   * emerald tokens are still used for icons and content accents where they add signal.
    */
-  --stl-color-accent: light-dark(#059669, #047857);
+  --stl-color-accent: light-dark(#18181b, #f4f4f5);
 
   /*
    * Docs-owned layout tokens (zinc family + surfaces). Mirrors rails-web Tailwind zinc usage so
@@ -74,26 +73,26 @@
   --sl-font-mono: var(--stl-typography-font-mono), 'Noto Sans Mono', ui-monospace, monospace;
 }
 
-/* Starlight props (links.css, mintlify card, reset accent-color) — align with marketing emerald */
+/* Starlight active/selection accent follows rails-web neutral black/zinc scale */
 :root,
 ::backdrop {
-  --sl-color-accent-low: hsl(163 50% 16%);
-  --sl-color-accent: hsl(160 84% 38%);
-  --sl-color-accent-high: hsl(151 62% 74%);
+  --sl-color-accent-low: hsl(240 6% 12%);
+  --sl-color-accent: hsl(240 6% 10%);
+  --sl-color-accent-high: hsl(240 5% 65%);
 }
 
 :root[data-theme='light'],
 [data-theme='light'] ::backdrop {
-  --sl-color-accent-high: hsl(163 88% 22%);
-  --sl-color-accent: hsl(161 94% 31%);
-  --sl-color-accent-low: hsl(149 76% 92%);
+  --sl-color-accent-high: hsl(240 6% 12%);
+  --sl-color-accent: hsl(240 6% 10%);
+  --sl-color-accent-low: hsl(240 5% 94%);
 }
 
-/* Solid accent control: high-contrast focus ring on green (outline uses page-neutral + inner ring). */
+/* Solid accent control: neutral focus ring (outline uses page-neutral + inner ring). */
 .stl-ui-button--accent:focus-visible {
   outline: 2px solid light-dark(#fafafa, #0a0a0a);
   outline-offset: 2px;
-  box-shadow: 0 0 0 4px light-dark(rgb(5 150 105 / 0.45), rgb(4 120 87 / 0.55));
+  box-shadow: 0 0 0 4px light-dark(rgb(24 24 27 / 0.25), rgb(244 244 245 / 0.3));
 }
 
 body {
@@ -777,7 +776,7 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
 /* Header alignment with rails-web-v2 docs layout */
 .page > header {
   background: var(--rails-surface) !important;
-  border-bottom: 1px solid var(--rails-border) !important;
+  border-bottom: 0 !important;
 }
 
 header > .header {
@@ -839,20 +838,69 @@ header .right-group {
   font-weight: 600;
 }
 
+/* Header action variants: keep clear visual hierarchy between internal docs CTA and external website CTA. */
+.header .right-group .stl-ui-button--outline {
+  border: 1px solid var(--rails-border) !important;
+  background: var(--rails-surface-hover) !important;
+  color: var(--rails-text-primary) !important;
+}
+
+.header .right-group .stl-ui-button--outline:hover {
+  background: var(--rails-surface-muted) !important;
+  border-color: var(--rails-border-strong) !important;
+}
+
+.header .right-group .stl-ui-button--outline[aria-current='page'] {
+  background: var(--rails-text-primary) !important;
+  border-color: var(--rails-text-primary) !important;
+  color: var(--rails-surface) !important;
+}
+
+.header .right-group .stl-ui-button--accent {
+  border: 1px solid var(--rails-focus-ring) !important;
+  background: var(--rails-focus-ring) !important;
+  color: var(--rails-surface) !important;
+}
+
+.header .right-group .stl-ui-button--accent:hover {
+  border-color: var(--rails-text-primary) !important;
+  background: var(--rails-text-primary) !important;
+}
+
 .stl-secondary-nav-tabs {
   border-top: 0 !important;
-  border-bottom: 1px solid var(--rails-border) !important;
+  border-bottom: 0 !important;
   background: var(--rails-surface) !important;
+  position: relative;
+  margin-inline: 0 !important;
+  width: 100% !important;
+}
+
+.stl-secondary-nav-tabs::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--rails-border);
+  pointer-events: none;
+}
+
+.stl-secondary-nav-tabs > ul {
+  margin: 0 !important;
+  padding-inline: 1rem !important;
 }
 
 .stl-secondary-nav-tabs a {
   border-radius: 0 !important;
   font-size: 0.875rem !important;
   font-weight: 500;
+  border-bottom: 0 !important;
 }
 
 .stl-secondary-nav-tabs a[aria-current='page'] {
-  border-bottom: 2px solid var(--rails-focus-ring) !important;
+  box-shadow: inset 0 -2px 0 0 var(--rails-focus-ring) !important;
 }
 
 /* Guides sidebar icons (match rails-web-v2 docs nav style) */

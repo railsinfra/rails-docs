@@ -10,14 +10,14 @@ sidebar:
 **Gradle** (from the SDK README):
 
 ```kotlin
-implementation("com.rails.api:rails-kotlin:0.0.1")
+implementation("com.railsinfra:rails-kotlin:0.0.1")
 ```
 
 **Maven**:
 
 ```xml
 <dependency>
-  <groupId>com.rails.api</groupId>
+  <groupId>com.railsinfra</groupId>
   <artifactId>rails-kotlin</artifactId>
   <version>0.0.1</version>
 </dependency>
