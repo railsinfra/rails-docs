@@ -22,7 +22,7 @@ Configuration details differ by language; each README under **`rails-sdks/<langu
 
 - **TypeScript** — `RAILS_API_KEY` (default env name); constructor options for environment and API key (see `rails-sdks/rails-typescript/README.md`).
 - **Go** — `option.WithAPIKey(...)`; default lookup **`RAILS_API_KEY`** (see `rails-sdks/rails-go/README.md`).
-- **Java / Kotlin** — `RailsOkHttpClient.fromEnv()` reads **`RAILS_API_KEY`** and **`RAILS_BASE_URL`**, or system properties `rails.apiKey` / `rails.baseUrl` (see `rails-sdks/rails-java/README.md` and `rails-sdks/rails-kotlin/README.md`).
+- **Java / Kotlin** — `RailsOkHttpClient.fromEnv()` reads **`RAILS_API_KEY`** and **`RAILS_BASE_URL`**, or system properties `rails.apiKey` / `rails.baseUrl` (see `rails-sdks/java/README.md` and `rails-sdks/rails-kotlin/README.md`).
 - **C#** — Default constructor uses **`RAILS_API_KEY`** and **`RAILS_BASE_URL`** from the environment (see `rails-sdks/rails-csharp/README.md`).
 
 Some SDK examples also set an **environment** (for example staging vs production). Match that to the host you were given.

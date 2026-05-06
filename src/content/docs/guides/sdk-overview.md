@@ -13,8 +13,8 @@ Official **Rails** client libraries in this monorepo live under **`rails-sdks/`*
 | --- | --- | --- |
 | `rails-sdks/rails-typescript/` | Node / TypeScript | `npm install @railsinfra/rails-typescript` and `import Rails from '@railsinfra/rails-typescript'` — see README in repo for versions and advanced usage. |
 | `rails-sdks/rails-go/` | Go | `go get github.com/railsinfra/rails-go` (see README for pinned version). |
-| `rails-sdks/rails-java/` | Java | Gradle / Maven coordinates `com.rails.api:rails-java` (version in README). |
-| `rails-sdks/rails-kotlin/` | Kotlin | Gradle / Maven coordinates `com.rails.api:rails-kotlin` (version in README). |
+| `rails-sdks/java/` | Java | Gradle / Maven coordinates `com.railsinfra:rails-java` (version in README). |
+| `rails-sdks/rails-kotlin/` | Kotlin | Gradle / Maven coordinates `com.railsinfra:rails-kotlin` (version in README). |
 | `rails-sdks/rails-csharp/` | .NET | README documents `dotnet add reference` to the generated project layout. |
 
 Always open the **README** in each folder for current versions, environment variable names, and examples.
