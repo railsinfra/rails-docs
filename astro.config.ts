@@ -138,8 +138,6 @@ export default defineConfig({
                   autogenerate: { directory: 'guides/quick-start' },
                 },
                 'guides/architecture',
-                'guides/authentication',
-                'guides/sdk-overview',
               ],
             },
           ],
