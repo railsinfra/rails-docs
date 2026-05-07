@@ -22,6 +22,8 @@ The **rails-infrastructure** project uses the included `Dockerfile` and `railway
 1. For **each** of the services above → **Variables**, add:
    - **`STAINLESS_API_KEY`** — **required** for the Docker image build (no `stl` login inside the container). Use the same `stl_sk_…` value as in local `.env`. The `Dockerfile` consumes it as a **BuildKit secret** (not `ARG`/`ENV`) so the value is not written into image layers; the builder must pass `--secret id=stainless_api_key,env=STAINLESS_API_KEY` (see [Docker build secrets](https://docs.docker.com/build/building/secrets/)). Railway historically maps service variables to **build args** ([docs](https://docs.railway.com/guides/dockerfiles#using-variables-at-build-time)); confirm your project’s builder supplies BuildKit secrets for this variable or build the image in CI and deploy a prebuilt artifact.
    - **`PUBLIC_MARKETING_SITE_URL`** (optional) — origin of the marketing app (`rails-web`) for that environment for the header **Website** link (non-secret; passed as a normal build-arg).
+   - **`PUBLIC_GET_STARTED_URL`** (optional) — destination for the header **Get started** button (e.g. dashboard signup). Defaults to `/` (docs root). Use an absolute `https://` URL when linking to an external app; the button will open in a new tab automatically.
+   - **`PUBLIC_GET_STARTED_ENABLED`** (optional) — feature flag for the header **Get started** button. Truthy values: `true`, `1`, `yes`, `on` (case-insensitive). When unset the button is shown; set to `false` to hide it per environment without code changes.
 2. Deploy from this directory (link the env first, e.g. `railway environment staging`):
    - Dev: `railway up --service rails-docs --detach`
    - Staging: `railway up --service rails-docs-staging --detach`
@@ -37,6 +39,8 @@ export STAINLESS_API_KEY=stl_sk_...
 docker buildx build \
   --secret id=stainless_api_key,env=STAINLESS_API_KEY \
   --build-arg PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}" \
+  --build-arg PUBLIC_GET_STARTED_URL="${PUBLIC_GET_STARTED_URL:-}" \
+  --build-arg PUBLIC_GET_STARTED_ENABLED="${PUBLIC_GET_STARTED_ENABLED:-}" \
   -t rails-docs:local .
 ```
 
@@ -58,6 +62,13 @@ Optional: point the header **Website** link at your marketing app (defaults to `
 
 ```bash
 echo 'PUBLIC_MARKETING_SITE_URL=https://your-production-domain' >> .env
+```
+
+Optional: configure or hide the header **Get started** CTA:
+
+```bash
+echo 'PUBLIC_GET_STARTED_URL=https://app.your-domain.com/signup' >> .env
+echo 'PUBLIC_GET_STARTED_ENABLED=true' >> .env
 ```
 
 ## Commands
@@ -83,7 +94,7 @@ Authoritative prose lives under `src/content/docs/`:
 - **Introduction** — `index.mdx` (landing under the Guides tab).
 - **Guides** — `src/content/docs/guides/` (Quick start, Architecture, Authentication, SDK overview).
 
-The Guides sidebar is configured in `astro.config.ts` (`autogenerate` for `guides/`). Set **`PUBLIC_MARKETING_SITE_URL`** in `.env` if the header **Website** link should not default to `http://localhost:3000`.
+The Guides sidebar is configured in `astro.config.ts` (`autogenerate` for `guides/`). Set **`PUBLIC_MARKETING_SITE_URL`** in `.env` if the header **Website** link should not default to `http://localhost:3000`. Use **`PUBLIC_GET_STARTED_URL`** to point the header **Get started** button at a specific destination (defaults to `/`), and **`PUBLIC_GET_STARTED_ENABLED=false`** to hide that button per environment.
 
 ## Further reading
 
