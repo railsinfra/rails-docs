@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Guides and API reference for Rails banking APIs—users, accounts, ledger, and official SDKs.
+description: Rails lets you spin up core banking infrastructure in minutes, not years. We built a secure, scalable engine for accounts, transactions, auditing, and a double-entry ledger so you can focus on solving customer problems.
 sidebar:
   order: 0
 ---
@@ -9,66 +9,53 @@ import { Callout } from '@stainless-api/docs/components';
 
 <div class="rails-intro">
 
-<div class="rails-intro__breadcrumbs label-micro">Getting started <span>›</span> Introduction</div>
-
 <p class="rails-intro__lead">
-  Learn what Rails offers, how to run your first request, and where to read HTTP details and SDK examples.
+  Learn what Rails offers, how to run setup and run your first transactions in a matter of minutes.
 </p>
 
 <section class="rails-intro__exec" aria-labelledby="rails-intro-exec-heading">
   <h2 id="rails-intro-exec-heading" class="rails-intro__exec-heading">
-    At a glance <span class="rails-intro__exec-badge">for planning</span>
+    At a glance
   </h2>
   <ul class="rails-intro__exec-list">
-    <li><strong>What it is:</strong> banking infrastructure you call over HTTP—users, balances, and a ledger behind one API.</li>
+    <li><strong>What it is:</strong> a tool to allow anyone to run core bankinng functions out of the box.</li>
     <li><strong>Who uses it:</strong> product and engineering teams building fintech, internal tools, or regulated money flows.</li>
-    <li><strong>Why it exists:</strong> keep identity, transfers, and audit history explicit instead of hiding them inside one application database.</li>
-    <li><strong>Open source:</strong> you can read and run the core services locally; the published SDKs follow the same API this site documents.</li>
+    <li><strong>Why it exists:</strong> to make banking easy and accessible to everyone.</li>
+    <li><strong>Open source:</strong> you can read and run the core services locally or use our published SDKs.</li>
   </ul>
 </section>
 
 <div class="rails-intro__divider" />
 
-<p class="rails-intro__body">
-  <strong>Rails</strong> is banking infrastructure: identity, accounts, and a double-entry ledger behind one
-  gateway. Use it when you need code-driven control of users, balances, and money movement that must
-  complete fully or not at all—without packing all of that into a single database or deployable.
-</p>
-
-## What you will learn
+## Getting Started
 
 <div class="rails-intro__learn-grid not-content">
-  <article class="rails-intro__learn-card">
+  <a class="rails-intro__learn-card rails-intro__learn-card--link" href="/api">
     <div class="rails-intro__learn-head">
       <div class="rails-intro__icon-box rails-intro__icon-box--tone-a">
         <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
       </div>
-      <h3>How the platform is shaped</h3>
+      <h3>SDK</h3>
     </div>
     <p>
-      Users, accounts, and ledger run as separate services so a failure in one area is less likely to take
-      down everything, and each service has a clear contract. Guides explain how the pieces connect and
-      how to run samples or the open-source stack on your laptop.
+      You can use our official SDKs to map your workflows and business domain concerns and iterate faster.
     </p>
-  </article>
-  <article class="rails-intro__learn-card">
+  </a>
+  <a class="rails-intro__learn-card rails-intro__learn-card--link" href="/guides/quick-start/">
     <div class="rails-intro__learn-head">
       <div class="rails-intro__icon-box rails-intro__icon-box--tone-b">
         <span class="material-symbols-sharp" aria-hidden="true">terminal</span>
       </div>
-      <h3>How to integrate from code</h3>
+      <h3>Locally</h3>
     </div>
     <p>
-      Official SDKs are built from the same API description as this site, so method names and routes stay
-      aligned with what you read here. Use guides for concepts, then open the API Reference tab for paths,
-      request bodies, and copy-ready examples.
+      If you want something truely custom get our core engine running on your local and start building.
     </p>
-  </article>
+  </a>
 </div>
 
 <Callout variant="info">
-  For exact URLs, request and response shapes, and per-language snippets, use the **API Reference** tab. It
-  stays aligned with the published SDKs you install from package managers.
+  For exact request and response shapes, and per-language snippets, use the **API Reference** tab.
 </Callout>
 
 ## Quickstart
@@ -105,29 +92,5 @@ Choose how much you want to run locally: sample apps only, or the full open-sour
     </div>
   </a>
 </div>
-
-## Explore
-
-Browse the live HTTP catalog and per-language snippets. For runnable demo servers and repo layout, follow **Quick start**; for install commands per language, see **SDK overview**.
-
-<div class="rails-intro__quick-grid rails-intro__quick-grid--single">
-  <a class="rails-intro__quick-link" href="/api">
-    <span class="material-symbols-sharp" aria-hidden="true">menu_book</span>
-    <div>
-      <strong>API Reference</strong>
-      <p>Every route, with request and response examples and snippets in each supported language.</p>
-    </div>
-  </a>
-</div>
-
-<p class="rails-intro__explore-foot">
-  <strong>Runnable samples:</strong> step-by-step setup is in <a href="/guides/quick-start/">Quick start</a>
-  (including the{' '}
-  <a href="https://github.com/railsinfra/rails-sdk-samples">
-    <code>rails-sdk-samples</code>
-  </a>{' '}
-  folders). <a href="/guides/sdk-overview/">SDK overview</a>
-  lists each client package and how it maps to the HTTP API.
-</p>
 
 </div>
