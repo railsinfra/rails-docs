@@ -7,13 +7,11 @@ sidebar:
 
 ## Install
 
-From the SDK README:
-
 ```sh
-npm install @railsinfra/rails-typescript
+npm install @railsinfra/rails
 ```
 
-The client is published on npm as **`@railsinfra/rails-typescript`** (see the SDK README for the current version and import path).
+The client is published on npm as **`@railsinfra/rails`** (current version: `0.2.2`).
 
 ## Configure and call the API
 
