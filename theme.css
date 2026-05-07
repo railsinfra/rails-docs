@@ -242,6 +242,43 @@ details.stldocs-sidebar-expander[open] > .stldocs-expander-summary::after {
   transform: rotate(180deg);
 }
 
+.stldocs-sidebar
+  details.stldocs-sidebar-expander:has(> ul > li.stldocs-sidebar-entry-link > a[href='/guides/quick-start/'])
+  > .stldocs-expander-summary {
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.stldocs-sidebar
+  details.stldocs-sidebar-expander:has(> ul > li.stldocs-sidebar-entry-link > a[href='/guides/quick-start/']):has(
+    a[aria-current='page']
+  )
+  > .stldocs-expander-summary {
+  font-weight: 600;
+}
+
+.stldocs-sidebar
+  details.stldocs-sidebar-expander:has(> ul > li.stldocs-sidebar-entry-link > a[href='/guides/quick-start/'])
+  > .stldocs-expander-summary
+  > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.stldocs-sidebar
+  details.stldocs-sidebar-expander:has(> ul > li.stldocs-sidebar-entry-link > a[href='/guides/quick-start/'])
+  > .stldocs-expander-summary
+  > span::before {
+  content: 'play_arrow';
+  font-family: 'Material Symbols Sharp', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+  -webkit-font-smoothing: antialiased;
+  color: var(--rails-text-muted);
+}
+
 /* ── API breadcrumbs (Join inserts bare Lucide chevrons) ── */
 .stldocs-breadcrumbs > svg.lucide {
   display: none !important;
@@ -258,6 +295,14 @@ details.stldocs-sidebar-expander[open] > .stldocs-expander-summary::after {
   display: inline-block;
   margin: 0 0.2em;
   vertical-align: middle;
+}
+
+.stl-content-breadcrumbs .stldocs-breadcrumbs-item,
+.stl-content-breadcrumbs .stldocs-breadcrumbs-link {
+  font-family: var(--stl-typography-font-mono), 'Noto Sans Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* ── Property expand / collapse (Lucide arrows) ── */
@@ -529,6 +574,11 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   max-width: min(52rem, 92vw);
 }
 
+.stl-content-panel > p.description {
+  font-size: clamp(1.1rem, 0.45rem + 1.1vw, 1.25rem);
+  line-height: 1.55;
+}
+
 .rails-intro {
   --rails-intro-section-gap: clamp(1.75rem, 3vw, 2.75rem);
 }
@@ -554,17 +604,6 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   font-size: clamp(1.1rem, 0.45rem + 1.1vw, 1.25rem);
   line-height: 1.55;
   color: var(--rails-text-secondary);
-}
-
-.rails-intro__breadcrumbs {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-bottom: 1rem;
-}
-
-.rails-intro__breadcrumbs span {
-  color: var(--rails-text-breadcrumb);
 }
 
 .rails-intro__divider {
@@ -639,6 +678,16 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
   padding: 1.25rem;
 }
 
+.rails-intro__learn-card--link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.rails-intro__learn-card--link:hover {
+  border-color: var(--rails-border-strong);
+  background: var(--rails-surface-hover);
+}
+
 .rails-intro__learn-head {
   display: flex;
   align-items: flex-start;
@@ -675,9 +724,9 @@ html[data-theme='dark'] ::-webkit-scrollbar-thumb:hover {
 }
 
 .rails-intro__icon-box--tone-b {
-  border-color: var(--rails-emerald-tile-border-b);
-  color: var(--rails-emerald-tile-fg-b);
-  background: var(--rails-emerald-tile-bg-b);
+  border-color: var(--rails-emerald-tile-border-a);
+  color: var(--rails-emerald-tile-fg-a);
+  background: var(--rails-emerald-tile-bg-a);
 }
 
 .rails-intro__learn-card p {
@@ -936,7 +985,7 @@ header .right-group {
 }
 
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/']::before {
-  content: 'play_arrow';
+  content: 'terminal';
 }
 
 /* SDK entries under Quick start: same assets as @stainless-api/docs language blocks; muted until current */
@@ -1242,7 +1291,7 @@ html.rails-sidebar-collapsed .stl-sdk-select [data-part='trigger-icon'] {
 .rails-arch-api-grid {
   margin-top: 0.55rem;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.55rem;
 }
 
@@ -1297,6 +1346,11 @@ html[data-theme='dark'] .stl-theme-toggle:hover {
   font-size: 1rem;
   line-height: 1;
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.stl-theme-toggle__github {
+  width: 1rem;
+  height: 1rem;
 }
 
 /* API Reference overview Libraries parity with rails-web-v2 Docs page */
