@@ -12,6 +12,8 @@
 #   docker buildx build \
 #     --build-arg STAINLESS_API_KEY=stl_sk_... \
 #     --build-arg PUBLIC_MARKETING_SITE_URL=https://your-marketing-site.example \
+#     --build-arg PUBLIC_GET_STARTED_URL=https://app.example.com/signup \
+#     --build-arg PUBLIC_GET_STARTED_ENABLED=true \
 #     -t rails-docs:local .
 #
 # Railway BuildKit cache requires a service-specific cache ID tied to the target path and does
@@ -33,6 +35,11 @@ RUN pnpm install --frozen-lockfile
 FROM base AS builder
 # Non-secret marketing site origin (optional); safe as build-arg.
 ARG PUBLIC_MARKETING_SITE_URL
+# Header "Get started" CTA controls (optional, non-secret).
+# PUBLIC_GET_STARTED_URL: where the button links to.
+# PUBLIC_GET_STARTED_ENABLED: feature flag (true|1|yes|on); empty = default (enabled).
+ARG PUBLIC_GET_STARTED_URL
+ARG PUBLIC_GET_STARTED_ENABLED
 ARG STAINLESS_API_KEY
 COPY --from=deps /app/node_modules ./node_modules
 # Copy only paths required for `pnpm run build` (avoids blind recursive `COPY . .`); `.dockerignore`
@@ -49,6 +56,8 @@ RUN sh -c 'set -e; \
       fi; \
       export STAINLESS_API_KEY; \
       export PUBLIC_MARKETING_SITE_URL="${PUBLIC_MARKETING_SITE_URL:-}"; \
+      export PUBLIC_GET_STARTED_URL="${PUBLIC_GET_STARTED_URL:-}"; \
+      export PUBLIC_GET_STARTED_ENABLED="${PUBLIC_GET_STARTED_ENABLED:-}"; \
       pnpm run build'
 
 FROM base AS runner
