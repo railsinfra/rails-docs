@@ -11,7 +11,7 @@ Official **Rails** client libraries in this monorepo live under **`rails-sdks/`*
 
 | Directory | Ecosystem | Install / import (see README in repo) |
 | --- | --- | --- |
-| `rails-sdks/rails-typescript/` | Node / TypeScript | `npm install @railsinfra/rails-typescript` and `import Rails from '@railsinfra/rails-typescript'` — see README in repo for versions and advanced usage. |
+| `rails-sdks/rails-typescript/` | Node / TypeScript | `npm install @railsinfra/rails` (v0.2.2) and `import Rails from '@railsinfra/rails'` — samples now use published npm package. |
 | `rails-sdks/rails-go/` | Go | `go get github.com/railsinfra/rails-go` (see README for pinned version). |
 | `rails-sdks/java/` | Java | Gradle / Maven coordinates `com.railsinfra:rails-java` (version in README). |
 | `rails-sdks/rails-kotlin/` | Kotlin | Gradle / Maven coordinates `com.railsinfra:rails-kotlin` (version in README). |
