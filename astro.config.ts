@@ -12,6 +12,43 @@ const stainlessApiKey =
     ? process.env.STAINLESS_API_KEY.trim()
     : undefined;
 
+/**
+ * Header `Get started` CTA: env-driven URL + feature flag so we can hide it per environment
+ * without redeploying code (e.g. dashboard not yet live in staging/production).
+ *
+ * Env contract:
+ * - PUBLIC_GET_STARTED_URL: absolute or relative URL the button points to. Defaults to docs root `/`.
+ * - PUBLIC_GET_STARTED_ENABLED: feature flag. Truthy values: `true` | `1` | `yes` | `on` (case-insensitive).
+ *   Defaults to enabled to preserve current behavior when the flag is unset.
+ */
+const getStartedUrl =
+  typeof process.env.PUBLIC_GET_STARTED_URL === 'string' && process.env.PUBLIC_GET_STARTED_URL.trim().length > 0
+    ? process.env.PUBLIC_GET_STARTED_URL.trim().replace(/\/$/, '')
+    : '/';
+
+const getStartedFlag = (process.env.PUBLIC_GET_STARTED_ENABLED ?? '').trim().toLowerCase();
+const getStartedEnabled =
+  getStartedFlag === '' ? true : getStartedFlag === 'true' || getStartedFlag === '1' || getStartedFlag === 'yes' || getStartedFlag === 'on';
+
+const getStartedIsExternal = /^https?:\/\//i.test(getStartedUrl);
+
+const headerLinks = [
+  ...(getStartedEnabled
+    ? [
+        {
+          label: 'Get started',
+          link: getStartedUrl,
+          ...(getStartedIsExternal ? { attrs: { target: '_blank', rel: 'noopener noreferrer' } } : {}),
+        },
+      ]
+    : []),
+  {
+    label: 'Website',
+    link: marketingSite,
+    attrs: { target: '_blank', rel: 'noopener noreferrer' },
+  },
+];
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
@@ -78,17 +115,7 @@ export default defineConfig({
       ],
       header: {
         layout: 'stacked',
-        links: [
-          {
-            label: 'Get started',
-            link: '/',
-          },
-          {
-            label: 'Website',
-            link: marketingSite,
-            attrs: { target: '_blank', rel: 'noopener noreferrer' },
-          },
-        ],
+        links: headerLinks,
       },
       tabs: [
         {
