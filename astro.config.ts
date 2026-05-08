@@ -135,7 +135,14 @@ export default defineConfig({
                 {
                   label: 'Quick start',
                   collapsed: false,
-                  autogenerate: { directory: 'guides/quick-start' },
+                  items: [
+                    { label: 'Local', link: '/guides/quick-start' },
+                    { label: 'TypeScript', link: '/api/typescript' },
+                    { label: 'Go', link: '/api/go' },
+                    { label: 'Java', link: '/api/java' },
+                    { label: 'Kotlin', link: '/api/kotlin' },
+                    { label: 'C#', link: '/api/csharp' },
+                  ],
                 },
                 'guides/architecture',
               ],
