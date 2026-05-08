@@ -993,7 +993,12 @@ header .right-group {
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/']::before,
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/']::before,
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/']::before,
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/typescript']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/go']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/java']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/kotlin']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/csharp']::before {
   content: '' !important;
   font-family: ui-sans-serif, system-ui, sans-serif;
   font-feature-settings: normal;
@@ -1005,23 +1010,28 @@ header .right-group {
   filter: saturate(0.75) brightness(0.88);
 }
 
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/typescript/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/typescript/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/typescript']::before {
   background-image: url('/sidebar-sdk/typescript.svg');
 }
 
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/go']::before {
   background-image: url('/sidebar-sdk/go.svg');
 }
 
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/java']::before {
   background-image: url('/sidebar-sdk/java.svg');
 }
 
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/kotlin']::before {
   background-image: url('/sidebar-sdk/kotlin.svg');
 }
 
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/csharp']::before {
   background-image: url('/sidebar-sdk/csharp.svg');
 }
 
@@ -1045,7 +1055,12 @@ header .right-group {
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/go/'][aria-current='page']::before,
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/java/'][aria-current='page']::before,
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/kotlin/'][aria-current='page']::before,
-.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/'][aria-current='page']::before {
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/csharp/'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/typescript'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/go'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/java'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/kotlin'][aria-current='page']::before,
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/api/csharp'][aria-current='page']::before {
   opacity: 1;
   filter: none;
 }
