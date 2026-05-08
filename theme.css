@@ -1163,7 +1163,7 @@ html.rails-sidebar-collapsed .stldocs-sidebar .stldocs-sidebar-entry-link > a::b
 html.rails-sidebar-collapsed
   .stldocs-sidebar
   .stldocs-sidebar-entry-link
-  > a[href*='/api']:not([href*='guides'])::before {
+  > a[href*='/api']:not([href*='guides']):not([href='/api/typescript']):not([href='/api/go']):not([href='/api/java']):not([href='/api/kotlin']):not([href='/api/csharp'])::before {
   content: 'hub' !important;
 }
 
