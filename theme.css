@@ -984,6 +984,7 @@ header .right-group {
   content: 'menu_book';
 }
 
+.stldocs-sidebar .stldocs-sidebar-entry-link > a[href='/guides/quick-start']::before,
 .stldocs-sidebar .stldocs-sidebar-entry-link > a[href*='/guides/quick-start/']::before {
   content: 'terminal';
 }
