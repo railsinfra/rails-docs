@@ -111,6 +111,13 @@ export default defineConfig({
           },
         },
         {
+          // Redirect bare HTTP pages (/api/resources/...) to the user's preferred SDK language
+          // (stored in localStorage, defaulting to TypeScript). Without this, the code pane
+          // always shows curl on HTTP pages even though the dropdown displays "TypeScript".
+          tag: 'script',
+          content: `(function(){var LANG_KEY='stldocs-selected-language';var BASE='/api';var LANGS=['typescript','python','go','java','kotlin','csharp','ruby','php','node'];function redirect(){var p=window.location.pathname;if(p!==BASE&&!p.startsWith(BASE+'/')){return}var rest=p.slice(BASE.length);var seg=(rest.split('/')[1])||'';if(LANGS.indexOf(seg)!==-1){return}var lang;try{lang=localStorage.getItem(LANG_KEY)}catch(e){}if(!lang||LANGS.indexOf(lang)===-1){lang='typescript'}window.location.replace(BASE+'/'+lang+rest)}redirect();document.addEventListener('astro:page-load',redirect)})();`,
+        },
+        {
           tag: 'script',
           content: `(function(){var KEY='rails-docs-sidebar-collapsed';var MQ='(min-width: 50rem)';function mq(){try{return matchMedia(MQ).matches}catch(e){return true}}function read(){try{return localStorage.getItem(KEY)==='true'}catch(e){return false}}function apply(){document.documentElement.classList.toggle('rails-sidebar-collapsed',read()&&mq())}try{if(read()&&mq())document.documentElement.classList.add('rails-sidebar-collapsed')}catch(e){}function syncAria(){var c=document.documentElement.classList.contains('rails-sidebar-collapsed');document.querySelectorAll('[data-rails-sidebar-toggle]').forEach(function(btn){btn.setAttribute('aria-expanded',c?'false':'true');btn.setAttribute('aria-label',c?'Expand docs sidebar':'Collapse docs sidebar')})}function toggle(){var next=!document.documentElement.classList.contains('rails-sidebar-collapsed');document.documentElement.classList.toggle('rails-sidebar-collapsed',next);try{localStorage.setItem(KEY,next?'true':'false')}catch(e){}syncAria()}document.addEventListener('click',function(e){var t=e.target&&e.target.closest&&e.target.closest('[data-rails-sidebar-toggle]');if(!t)return;e.preventDefault();toggle()});var mql=matchMedia(MQ);function onMq(){apply();syncAria()}(mql.addEventListener?mql.addEventListener('change',onMq):mql.addListener(onMq));document.addEventListener('astro:page-load',function(){apply();syncAria()})})();`,
         },
