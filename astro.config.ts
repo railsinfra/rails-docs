@@ -71,6 +71,8 @@ export default defineConfig({
         stainlessProject: 'rails',
         // Bare `/api/...` URLs use language `http` in docs-ui `parseRoute`. `excludeLanguages: ['http']`
         // removes `http` from `virtual:stainless-apis-manifest` and breaks `getSDKJSONInSSR` in Docs.astro.
+        // Code snippet base URLs come from the `environments` order in rails-sdks/.stainless/stainless.yml —
+        // `production` must be listed first so generated curl/SDK snippets default to the production URL.
         defaultLanguage: 'typescript',
         propertySettings: {
           collapseDescription: false,
@@ -107,6 +109,13 @@ export default defineConfig({
             rel: 'stylesheet',
             href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap',
           },
+        },
+        {
+          // Redirect bare HTTP pages (/api/resources/...) to the user's preferred SDK language
+          // (stored in localStorage, defaulting to TypeScript). Without this, the code pane
+          // always shows curl on HTTP pages even though the dropdown displays "TypeScript".
+          tag: 'script',
+          content: `(function(){var LANG_KEY='stldocs-selected-language';var BASE='/api';var LANGS=['typescript','python','go','java','kotlin','csharp','ruby','php','node'];function redirect(){var p=window.location.pathname;if(p!==BASE&&!p.startsWith(BASE+'/')){return}var rest=p.slice(BASE.length);var seg=(rest.split('/')[1])||'';if(LANGS.indexOf(seg)!==-1){return}var lang;try{lang=localStorage.getItem(LANG_KEY)}catch(e){}if(!lang||LANGS.indexOf(lang)===-1){lang='typescript'}window.location.replace(BASE+'/'+lang+rest)}redirect();document.addEventListener('astro:page-load',redirect)})();`,
         },
         {
           tag: 'script',
