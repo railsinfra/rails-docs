@@ -160,7 +160,7 @@ export default defineConfig({
         },
         {
           label: 'API Reference',
-          link: '/api',
+          link: '/api/typescript',
           sidebar: generateAPIReferenceItems({
             excludeResourceOverviewPages: true,
           }),
