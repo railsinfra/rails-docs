@@ -71,6 +71,8 @@ export default defineConfig({
         stainlessProject: 'rails',
         // Bare `/api/...` URLs use language `http` in docs-ui `parseRoute`. `excludeLanguages: ['http']`
         // removes `http` from `virtual:stainless-apis-manifest` and breaks `getSDKJSONInSSR` in Docs.astro.
+        // Code snippet base URLs come from the `environments` order in rails-sdks/.stainless/stainless.yml —
+        // `production` must be listed first so generated curl/SDK snippets default to the production URL.
         defaultLanguage: 'typescript',
         propertySettings: {
           collapseDescription: false,
