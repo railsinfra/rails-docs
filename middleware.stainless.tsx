@@ -14,16 +14,18 @@ function getDocsLanguages(): DocsLanguage[] {
 
 function SDKSelectReactComponent({
   selected,
+  currentValue,
   languages,
   className,
   ...rest
 }: {
   selected: DocsLanguage;
+  currentValue?: DocsLanguage;
   languages: DocsLanguage[];
   className?: string;
 } & Omit<React.ComponentProps<'div'>, 'children'>) {
   return (
-    <Dropdown data-current-value={selected} className={className} {...rest}>
+    <Dropdown data-current-value={currentValue ?? selected} className={className} {...rest}>
       <Dropdown.Trigger>
         <Dropdown.TriggerSelectedItem>
           <Dropdown.Icon>
@@ -64,6 +66,7 @@ function SDKSelectReactComponent({
 function SDKRequestTitleNoHttp({ snippetLanguage }: SDKRequestTitleProps) {
   const raw = snippetLanguage.split('.').at(0) as DocsLanguage | undefined;
   const languages = getDocsLanguages().filter((l) => l !== 'http');
+  const currentValue: DocsLanguage = raw === 'http' ? 'http' : (raw ?? 'typescript');
   const selected: DocsLanguage =
     raw === 'http' || !raw || !languages.includes(raw)
       ? (languages.includes('typescript') ? 'typescript' : languages[0]!)
@@ -72,6 +75,7 @@ function SDKRequestTitleNoHttp({ snippetLanguage }: SDKRequestTitleProps) {
   return (
     <SDKSelectReactComponent
       selected={selected}
+      currentValue={currentValue}
       languages={languages}
       data-stldocs-snippet-select
       className="stl-sdk-select stl-ui-not-prose"
